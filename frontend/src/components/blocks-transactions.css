@@ -1,0 +1,1104 @@
+/* Base Table Styling - Dark Theme */
+.transaction-table-container, 
+.blocks-table-container {
+  margin-top: 20px;
+  background-color: #0c1525;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 1px solid #1a2637;
+  margin-bottom: 30px;
+}
+
+/* Hide duplicate ChainPhantom title */
+.dashboard-title {
+  display: none !important;
+}
+
+/* Recent Transactions / Blocks Panel */
+.recent-transactions-panel,
+.recent-blocks-panel {
+  background-color: #12151f;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #1c2535;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.panel-header {
+  background-color: #12151f;
+  padding: 14px 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #1c2535;
+}
+
+.panel-header h2 {
+  color: #e0e0e0;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.panel-header h2 svg {
+  margin-right: 8px;
+  color: #4a9fff;
+}
+
+.panel-header .live-badge {
+  background-color: #00a767;
+  color: white;
+  padding: 3px 8px;
+  font-size: 0.7rem;
+  border-radius: 4px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.info-badge {
+  background-color: #4a9fff;
+  color: white;
+  padding: 3px 8px;
+  font-size: 0.7rem;
+  border-radius: 4px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Transaction Row Styling - Compact */
+.transaction-list {
+  padding: 0;
+}
+
+.transaction-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid #1c2535;
+  transition: background-color 0.2s;
+}
+
+.transaction-item:last-child {
+  border-bottom: none;
+}
+
+.transaction-item:hover {
+  background-color: #1c2230;
+}
+
+.transaction-hash {
+  font-family: 'JetBrains Mono', 'Consolas', monospace;
+  font-size: 0.9rem;
+  color: #4a9fff;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.transaction-hash:hover {
+  text-decoration: underline;
+}
+
+.transaction-details {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+
+.transaction-amount {
+  font-weight: 600;
+  color: #e0e0e0;
+}
+
+.transaction-fee {
+  color: #8aa2c7;
+}
+
+.transaction-time {
+  color: #8aa2c7;
+  font-size: 0.8rem;
+}
+
+/* Mempool Panel */
+.mempool-panel {
+  background-color: #0c1525;
+  border-radius: 8px;
+  border: 1px solid #1a2637;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.stats-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #f0f2f5;
+  text-align: center;
+  padding: 12px 0;
+}
+
+.stats-label {
+  color: #8aa2c7;
+  text-align: center;
+  font-size: 0.9rem;
+  padding-bottom: 8px;
+}
+
+.mempool-transaction-count {
+  color: #4a9fff;
+}
+
+.hashrate-value {
+  color: #f39c12;
+}
+
+/* Network Statistics */
+.network-panel {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.network-card {
+  background-color: #0c1525;
+  border-radius: 8px;
+  border: 1px solid #1a2637;
+  flex: 1;
+  padding: 16px;
+  margin-right: 16px;
+}
+
+.network-card:last-child {
+  margin-right: 0;
+}
+
+.network-card-header {
+  font-size: 0.9rem;
+  color: #8aa2c7;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.network-card-header svg {
+  margin-right: 6px;
+}
+
+.network-card-value {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #e0e0e0;
+}
+
+/* Latest Block Panel */
+.latest-block-panel {
+  background-color: #0c1525;
+  border-radius: 8px;
+  border: 1px solid #1a2637;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.latest-block-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.latest-block-label {
+  color: #8aa2c7;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+}
+
+.latest-block-label svg {
+  margin-right: 6px;
+}
+
+.latest-block-height {
+  color: #4a9fff;
+  font-weight: 600;
+}
+
+.latest-block-hash {
+  font-family: 'JetBrains Mono', 'Consolas', monospace;
+  font-size: 0.85rem;
+  color: #4a9fff;
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* Standard table styling */
+.transaction-table-container .table-responsive,
+.blocks-table-container .table-responsive {
+  overflow-x: auto;
+}
+
+.transaction-table-container .table-header,
+.blocks-table-container .table-header {
+  padding: 12px 16px;
+  background-color: #0c1525;
+  border-bottom: 1px solid #1a2637;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.transaction-table-container .table-header h2,
+.blocks-table-container .table-header h2 {
+  color: #f0f2f5;
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.transaction-table-container .table-header button,
+.blocks-table-container .table-header button {
+  background-color: #1a2940;
+  border: none;
+  color: #8aa2c7;
+  padding: 6px 10px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.transaction-table-container .table-header button:hover,
+.blocks-table-container .table-header button:hover {
+  background-color: #243656;
+  color: #ffffff;
+}
+
+/* Table Base Styles */
+.transaction-table-container .table,
+.blocks-table-container .table {
+  margin-bottom: 0;
+  color: #f0f2f5;
+  font-size: 0.9rem;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.transaction-table-container .table thead,
+.blocks-table-container .table thead {
+  background-color: #0c1525;
+}
+
+.transaction-table-container .table th,
+.blocks-table-container .table th {
+  padding: 12px 16px;
+  color: #8aa2c7;
+  font-weight: 600;
+  background-color: #0c1525;
+  border-color: #1a2637;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  text-align: left;
+  border-bottom: 1px solid #1a2637;
+}
+
+.transaction-table-container .table td,
+.blocks-table-container .table td {
+  padding: 12px 16px;
+  vertical-align: middle;
+  border-top: 1px solid #1a2637;
+  transition: background-color 0.2s ease;
+  color: #e0e0e0;
+}
+
+/* Table Row Styling */
+.transaction-table-container .transaction-row,
+.blocks-table-container .block-row {
+  transition: background-color 0.2s ease;
+  background-color: #0c1525;
+}
+
+.transaction-table-container .transaction-row:hover,
+.blocks-table-container .block-row:hover {
+  background-color: #121e30;
+}
+
+/* Hash Cell Styling */
+.transaction-table-container .hash-cell,
+.blocks-table-container .hash-cell {
+  font-family: 'JetBrains Mono', 'Consolas', monospace;
+  font-size: 0.85rem;
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.transaction-table-container .tx-hash-link,
+.transaction-table-container .block-link,
+.blocks-table-container .tx-hash-link,
+.blocks-table-container .block-link {
+  color: #4a9fff;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  font-weight: 500;
+}
+
+.transaction-table-container .tx-hash-link:hover,
+.transaction-table-container .block-link:hover,
+.blocks-table-container .tx-hash-link:hover,
+.blocks-table-container .block-link:hover {
+  color: #7ab7ff;
+  text-decoration: underline;
+}
+
+/* Size and Amount Cells */
+.transaction-table-container .size-cell,
+.transaction-table-container .amount-cell,
+.blocks-table-container .size-cell,
+.blocks-table-container .amount-cell {
+  font-weight: 600;
+  color: #e0e0e0;
+}
+
+/* Fee Cell */
+.transaction-table-container .fee-cell,
+.blocks-table-container .fee-cell {
+  color: #95a5a6;
+  font-weight: 500;
+}
+
+/* Time/Date Cell */
+.transaction-table-container .time-cell,
+.blocks-table-container .time-cell {
+  white-space: nowrap;
+  color: #95a5a6;
+}
+
+/* Keep the existing styles for loading, errors, etc. */
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .transaction-table-container .table th,
+  .transaction-table-container .table td,
+  .blocks-table-container .table th,
+  .blocks-table-container .table td {
+    padding: 10px 12px;
+    font-size: 0.8rem;
+  }
+  
+  .transaction-hash {
+    font-size: 0.8rem;
+  }
+  
+  .transaction-details {
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .stats-value {
+    font-size: 1.8rem;
+  }
+}
+
+/* App Title Styling */
+.app-title {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.app-title h1 {
+  font-size: 2.5rem;
+  color: #f0f2f5;
+  margin-bottom: 5px;
+}
+
+.app-title p {
+  color: #8aa2c7;
+  font-size: 1.1rem;
+}
+
+/* Remove duplicate chain phantom name */
+.duplicate-title {
+  display: none;
+}
+
+/* Loading Indicator */
+.loading-container {
+  padding: 40px 0;
+  text-align: center;
+  background-color: #0d1520;
+  border-radius: 8px;
+}
+
+.loading-container .loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(31, 51, 71, 0.3);
+  border-top: 3px solid #4a9fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 15px;
+}
+
+.loading-container .loading-text {
+  color: #9fafcf;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Empty State Message */
+.transaction-table-container .empty-state,
+.blocks-table-container .empty-state {
+  padding: 40px;
+  text-align: center;
+  color: #9fafcf;
+  background-color: #0d1520;
+  border-radius: 8px;
+}
+
+.transaction-table-container .empty-state-icon,
+.blocks-table-container .empty-state-icon {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  color: #1f3347;
+}
+
+.transaction-table-container .empty-state-message,
+.blocks-table-container .empty-state-message {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+/* Error State */
+.transaction-table-container .error-container,
+.blocks-table-container .error-container {
+  padding: 20px;
+  background-color: rgba(231, 76, 60, 0.05);
+  border-left: 4px solid #e74c3c;
+  margin: 20px 0;
+  border-radius: 0 8px 8px 0;
+}
+
+.transaction-table-container .error-message,
+.blocks-table-container .error-message {
+  color: #e74c3c;
+  font-size: 0.95rem;
+  margin: 0 0 15px 0;
+}
+
+.transaction-table-container .error-action,
+.blocks-table-container .error-action {
+  margin-top: 10px;
+}
+
+.transaction-table-container .error-action button,
+.blocks-table-container .error-action button {
+  background-color: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
+  border: 1px solid rgba(231, 76, 60, 0.2);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.transaction-table-container .error-action button:hover,
+.blocks-table-container .error-action button:hover {
+  background-color: rgba(231, 76, 60, 0.2);
+  transform: translateY(-2px);
+}
+
+.transaction-table-container .error-action button i,
+.blocks-table-container .error-action button i {
+  margin-right: 5px;
+}
+
+/* Scrollbar styling for tables */
+.transaction-table-container .table-responsive::-webkit-scrollbar,
+.blocks-table-container .table-responsive::-webkit-scrollbar {
+  height: 8px;
+}
+
+.transaction-table-container .table-responsive::-webkit-scrollbar-track,
+.blocks-table-container .table-responsive::-webkit-scrollbar-track {
+  background: #0d1520;
+  border-radius: 10px;
+}
+
+.transaction-table-container .table-responsive::-webkit-scrollbar-thumb,
+.blocks-table-container .table-responsive::-webkit-scrollbar-thumb {
+  background: #1f3347;
+  border-radius: 10px;
+}
+
+.transaction-table-container .table-responsive::-webkit-scrollbar-thumb:hover,
+.blocks-table-container .table-responsive::-webkit-scrollbar-thumb:hover {
+  background: #2c3d59;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+  .transaction-table-container .table th,
+  .transaction-table-container .table td,
+  .blocks-table-container .table th,
+  .blocks-table-container .table td {
+    padding: 14px 16px;
+  }
+  
+  .transaction-table-container .hash-cell,
+  .blocks-table-container .hash-cell {
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 576px) {
+  .transaction-table-container .table th,
+  .transaction-table-container .table td,
+  .blocks-table-container .table th,
+  .blocks-table-container .table td {
+    padding: 10px 12px;
+    font-size: 0.8rem;
+  }
+  
+  .transaction-table-container .hash-cell,
+  .blocks-table-container .hash-cell {
+    max-width: 120px;
+  }
+  
+  .transaction-table-container .table-header,
+  .blocks-table-container .table-header {
+    padding: 12px 15px;
+  }
+  
+  .transaction-table-container .table-header h2,
+  .blocks-table-container .table-header h2 {
+    font-size: 1.1rem;
+  }
+}
+
+/* Specific styling to match the image */
+.recent-container {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .recent-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.recent-card {
+  background-color: #12151f;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #1c2535;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.recent-card-header {
+  padding: 14px 16px;
+  background-color: #12151f;
+  border-bottom: 1px solid #1c2535;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.recent-card-title {
+  font-size: 1.0rem;
+  font-weight: 500;
+  color: #e0e0e0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.recent-card-title i {
+  color: #4a9fff;
+}
+
+.recent-card-body {
+  padding: 0;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.recent-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.recent-item {
+  padding: 12px 16px;
+  border-bottom: 1px solid #1c2535;
+  transition: background-color 0.2s;
+}
+
+.recent-item:last-child {
+  border-bottom: none;
+}
+
+.recent-item:hover {
+  background-color: #1c2230;
+}
+
+.tx-hash-link.link-button,
+.block-height-link.link-button {
+  color: #4a9fff;
+  font-family: monospace;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.tx-hash-link.link-button:hover,
+.block-height-link.link-button:hover {
+  color: #6ebbff;
+  text-decoration: underline;
+}
+
+.block-time {
+  font-size: 0.75rem;
+  color: #8aa2c7;
+  margin-left: 0.5rem;
+}
+
+.block-info {
+  display: flex;
+  justify-content: flex-start;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.block-info span {
+  font-size: 0.8rem;
+  color: #8aa2c7;
+}
+
+.tx-amount {
+  font-weight: 500;
+  color: #00a767;
+  font-size: 0.85rem;
+}
+
+.tx-fee {
+  font-size: 0.8rem;
+  color: #8aa2c7;
+}
+
+.stats-badge.live {
+  background-color: #00a767;
+  color: white;
+  padding: 3px 8px;
+  font-size: 0.7rem;
+  border-radius: 4px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Transaction Details Page Styling */
+.transaction-details-page {
+  padding-bottom: 30px;
+  width: 100%;
+}
+
+.container.mt-4 {
+  width: 100%;
+  max-width: 1140px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.card {
+  background-color: #0e1a29;
+  border: 1px solid #243247;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  width: 100%;
+}
+
+.card-header {
+  background-color: #0e1a29;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #243247;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #e0e0e0;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.card-body {
+  padding: 1.25rem;
+  background-color: #0e1a29;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.col-md-3 {
+  position: relative;
+  width: 25%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.col-md-6 {
+  position: relative;
+  width: 50%;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.detail-label {
+  color: #8aa2c7;
+  font-size: 0.85rem;
+  margin-bottom: 0.3rem;
+}
+
+.badge {
+  padding: 0.35rem 0.6rem;
+  font-weight: 500;
+  font-size: 0.8rem;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.bg-success {
+  background-color: #00a767;
+  color: white;
+}
+
+.bg-warning {
+  background-color: #f39c12;
+  color: white;
+}
+
+.amount-value {
+  color: #51cf66;
+  font-family: monospace;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.fee-value {
+  color: #51cf66;
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+
+.hash-display {
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: #4a9fff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Transaction addresses summary section */
+.address-summary {
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: #0d1521;
+  border-radius: 6px;
+  border: 1px solid #1e2c3d;
+}
+
+.address-item {
+  padding: 0.75rem;
+  border-bottom: 1px solid #1e2c3d;
+  display: flex;
+  flex-direction: column;
+}
+
+.address-item:last-child {
+  border-bottom: none;
+}
+
+.address-link {
+  color: #4a9fff;
+  font-family: monospace;
+  font-size: 0.85rem;
+  word-break: break-all;
+  text-decoration: none;
+}
+
+.address-link:hover {
+  color: #74c0fc;
+  text-decoration: underline;
+}
+
+/* Inputs and Outputs tables */
+.table-responsive {
+  overflow-x: auto;
+}
+
+.table-dark {
+  background-color: transparent;
+  color: #e0e0e0;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-dark th {
+  background-color: #0d1521;
+  padding: 0.75rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: none;
+  color: #8aa2c7;
+  text-transform: uppercase;
+}
+
+.table-dark td {
+  padding: 0.75rem 1rem;
+  border-top: 1px solid #1e2c3d;
+  vertical-align: middle;
+}
+
+.address-cell {
+  max-width: 350px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.text-end {
+  text-align: right;
+}
+
+/* Transaction Pattern Detection */
+.pattern-detector {
+  background-color: #0e1a29;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #243247;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  width: 100%;
+}
+
+.pattern-header {
+  background-color: #0e1a29;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #243247;
+  font-weight: 500;
+  color: #e0e0e0;
+  display: flex;
+  align-items: center;
+}
+
+.pattern-header svg {
+  margin-right: 0.5rem;
+  color: #f39c12;
+}
+
+.pattern-content {
+  padding: 1.25rem;
+  background-color: #0d1521;
+}
+
+.no-patterns {
+  color: #8aa2c7;
+  padding: 1rem;
+  text-align: center;
+}
+
+.pattern-note {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: #8aa2c7;
+  text-align: center;
+}
+
+/* Transaction Chain */
+.transaction-chain {
+  padding: 1rem;
+  background-color: #0d1521;
+  border-radius: 6px;
+}
+
+/* Export section */
+.export-buttons {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-primary {
+  background-color: #1d4ed8;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #2563eb;
+}
+
+.btn-secondary {
+  background-color: #2d3748;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #3a4a61;
+}
+
+/* Generate PDF Button */
+.generate-pdf-btn {
+  background-color: #1d4ed8;
+  color: white;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.generate-pdf-btn:hover {
+  background-color: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Icons */
+.fas {
+  font-size: 0.9rem;
+}
+
+.me-2 {
+  margin-right: 0.5rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-3 {
+  margin-bottom: 1rem;
+}
+
+.mt-4 {
+  margin-top: 1.5rem;
+}
+
+.mt-3 {
+  margin-top: 1rem;
+}
+
+.pdf-export-section {
+  padding-top: 1rem;
+  border-top: 1px solid #2d3748;
+  margin-top: 1rem;
+}
+
+/* Copy buttons */
+.copy-button {
+  background-color: transparent;
+  border: none;
+  color: #4a9fff;
+  cursor: pointer;
+  padding: 0.25rem;
+  font-size: 0.8rem;
+}
+
+.copy-button:hover {
+  color: #74c0fc;
+}
+
+/* Transaction Address Summary headers */
+h6 {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #e0e0e0;
+  margin-bottom: 0.75rem;
+  margin-top: 0;
+}
+
+/* Override font-awesome icon in navbar */
+nav .fa-exchange-alt {
+  margin-right: 0.5rem;
+}
+
+/* Fix Bootstrap compatibility */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Fix flex utilities */
+.d-flex {
+  display: flex !important;
+}
+
+.justify-content-between {
+  justify-content: space-between !important;
+}
+
+.align-items-center {
+  align-items: center !important;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 767.98px) {
+  .col-md-3, .col-md-6 {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .row {
+    margin-right: 0;
+    margin-left: 0;
+  }
+  
+  .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .hash-display {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+  }
+}
+
+.text-center {
+  text-align: center !important;
+} 
