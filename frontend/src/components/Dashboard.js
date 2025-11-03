@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCube, faExchangeAlt, faNetworkWired, faChartLine } from '@fortawesome/free-solid-svg-icons';
 
 // API key for blockchain.info
-const API_KEY = '3c6ed425e7b74898a643e5248b514022';
+const API_KEY = process.env.REACT_APP_BLOCKCHAIN_API_KEY || '';
 
 const Dashboard = () => {
   const navigate = useNavigate();

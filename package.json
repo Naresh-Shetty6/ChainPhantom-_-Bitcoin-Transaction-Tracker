@@ -1,8 +1,31 @@
 {
-  "dependencies": {
-    "d3": "^7.9.0",
-    "file-saver": "^2.0.5",
-    "node-fetch": "^3.3.2",
-    "react-to-pdf": "^2.0.0"
+  "name": "chainphantom",
+  "version": "1.0.0",
+  "description": "Bitcoin blockchain explorer and transaction tracker",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "start:backend": "cd backend && npm start",
+    "start:frontend": "cd frontend && npm start",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm start",
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "build": "cd frontend && npm run build",
+    "test": "cd backend && npm test && cd ../frontend && npm test"
+  },
+  "keywords": ["bitcoin", "blockchain", "explorer", "cryptocurrency", "transaction-tracker"],
+  "author": "Naresh G",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "eslint": "^8.57.0",
+    "eslint-plugin-react": "^7.34.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^3.2.5"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
   }
 }

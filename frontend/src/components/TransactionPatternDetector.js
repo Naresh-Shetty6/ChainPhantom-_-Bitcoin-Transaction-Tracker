@@ -1,14 +1,18 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './TransactionPatternDetector.css';
-import { FaExclamationTriangle, FaInfoCircle, FaExclamationCircle, FaSyncAlt, FaRandom, FaLayerGroup, FaHandHoldingUsd, FaShieldAlt, FaHourglass, FaMoneyBillWave } from 'react-icons/fa';
+import { FaExclamationTriangle, FaInfoCircle, FaExclamationCircle, FaSyncAlt, FaRandom, FaLayerGroup, FaHandHoldingUsd, FaShieldAlt, FaHourglass, FaMoneyBillWave, FaFilter, FaExpand, FaCompress } from 'react-icons/fa';
 
-const TransactionPatternDetector = ({ transaction, inputs, outputs }) => {
+const TransactionPatternDetector = ({ transaction, inputs, outputs, onPatternDataChange }) => {
   const [patterns, setPatterns] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [detectedPatterns, setDetectedPatterns] = useState([]);
   const [transactionChain, setTransactionChain] = useState(null);
   const [analysisDepth, setAnalysisDepth] = useState(3);
+  const [riskScore, setRiskScore] = useState(0);
+  const [filterSeverity, setFilterSeverity] = useState('all');
+  const [expandedView, setExpandedView] = useState(false);
+  const [patternTimeline, setPatternTimeline] = useState([]);
   const maxDepth = 3; // Define maxDepth as a constant
   
   // Update API key fallback and remove it from the API calls
@@ -656,6 +660,71 @@ const TransactionPatternDetector = ({ transaction, inputs, outputs }) => {
     return layeringPatterns;
   };
 
+  // Calculate risk score based on detected patterns
+  const calculateRiskScore = useCallback((patterns) => {
+    const weights = {
+      high: 30,
+      medium: 15,
+      low: 5
+    };
+    
+    let score = 0;
+    patterns.forEach(pattern => {
+      score += weights[pattern.severity] || 0;
+    });
+    
+    // Normalize to 0-100 scale
+    return Math.min(100, score);
+  }, []);
+
+  // Filter patterns by severity
+  const filterPatterns = (patterns, severity) => {
+    if (severity === 'all') return patterns;
+    return patterns.filter(p => p.severity === severity);
+  };
+
+  // Combine basic and advanced patterns, with deduplication
+  const allPatterns = [...patterns];
+  detectedPatterns.forEach(advPattern => {
+    if (!allPatterns.some(p => p.type === advPattern.type)) {
+      allPatterns.push(advPattern);
+    }
+  });
+  
+  // Apply filter
+  const filteredPatterns = filterPatterns(allPatterns, filterSeverity);
+  
+  // Update risk score when patterns change
+  useEffect(() => {
+    const newRiskScore = calculateRiskScore(allPatterns);
+    setRiskScore(newRiskScore);
+    
+    // Send pattern data to parent component
+    if (onPatternDataChange) {
+      onPatternDataChange({
+        transaction: transaction?.hash || transaction?.txid,
+        timestamp: new Date().toISOString(),
+        riskScore: newRiskScore,
+        patterns: allPatterns.map(p => ({
+          type: p.type,
+          severity: p.severity,
+          description: p.description
+        }))
+      });
+    }
+  }, [allPatterns, calculateRiskScore, onPatternDataChange, transaction]);
+
+  // Get risk level based on score
+  const getRiskLevel = (score) => {
+    if (score >= 70) return { level: 'Critical', color: '#e74c3c', icon: '🔴' };
+    if (score >= 50) return { level: 'High', color: '#f39c12', icon: '🟠' };
+    if (score >= 30) return { level: 'Medium', color: '#f1c40f', icon: '🟡' };
+    if (score >= 10) return { level: 'Low', color: '#3498db', icon: '🔵' };
+    return { level: 'Minimal', color: '#2ecc71', icon: '🟢' };
+  };
+
+  const riskLevel = getRiskLevel(riskScore);
+
   // Get CSS class based on severity
   const getSeverityClass = (severity) => {
     switch (severity) {
@@ -719,24 +788,93 @@ const TransactionPatternDetector = ({ transaction, inputs, outputs }) => {
     );
   }
 
-  // Combine basic and advanced patterns, with deduplication
-  const allPatterns = [...patterns];
-  detectedPatterns.forEach(advPattern => {
-    if (!allPatterns.some(p => p.type === advPattern.type)) {
-      allPatterns.push(advPattern);
-    }
-  });
-
   return (
-    <div className="pattern-detector">
+    <div className={`pattern-detector ${expandedView ? 'expanded' : ''}`}>
       <div className="pattern-header">
-        <FaShieldAlt className="mr-2" /> Suspicious Pattern Detection
+        <div className="header-left">
+          <FaShieldAlt className="mr-2" /> Suspicious Pattern Detection
+        </div>
+        <div className="header-right">
+          <button 
+            className="control-btn" 
+            onClick={() => setExpandedView(!expandedView)}
+            title={expandedView ? 'Collapse' : 'Expand'}
+          >
+            {expandedView ? <FaCompress /> : <FaExpand />}
+          </button>
+        </div>
+      </div>
+      
+      {/* Risk Score Dashboard */}
+      <div className="risk-dashboard">
+        <div className="risk-score-container">
+          <div className="risk-score-circle" style={{ borderColor: riskLevel.color }}>
+            <div className="risk-score-value" style={{ color: riskLevel.color }}>
+              {riskScore}
+            </div>
+            <div className="risk-score-label">Risk Score</div>
+          </div>
+          <div className="risk-details">
+            <div className="risk-level" style={{ color: riskLevel.color }}>
+              {riskLevel.icon} {riskLevel.level} Risk
+            </div>
+            <div className="risk-stats">
+              <div className="stat-item">
+                <span className="stat-label">Patterns Detected:</span>
+                <span className="stat-value">{allPatterns.length}</span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-label">High Severity:</span>
+                <span className="stat-value severity-high">
+                  {allPatterns.filter(p => p.severity === 'high').length}
+                </span>
+              </div>
+              <div className="stat-item">
+                <span className="stat-label">Analysis Depth:</span>
+                <span className="stat-value">{maxDepth} levels</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Filter Controls */}
+      <div className="pattern-filters">
+        <div className="filter-label">
+          <FaFilter /> Filter by Severity:
+        </div>
+        <div className="filter-buttons">
+          <button 
+            className={`filter-btn ${filterSeverity === 'all' ? 'active' : ''}`}
+            onClick={() => setFilterSeverity('all')}
+          >
+            All ({allPatterns.length})
+          </button>
+          <button 
+            className={`filter-btn ${filterSeverity === 'high' ? 'active' : ''}`}
+            onClick={() => setFilterSeverity('high')}
+          >
+            High ({allPatterns.filter(p => p.severity === 'high').length})
+          </button>
+          <button 
+            className={`filter-btn ${filterSeverity === 'medium' ? 'active' : ''}`}
+            onClick={() => setFilterSeverity('medium')}
+          >
+            Medium ({allPatterns.filter(p => p.severity === 'medium').length})
+          </button>
+          <button 
+            className={`filter-btn ${filterSeverity === 'low' ? 'active' : ''}`}
+            onClick={() => setFilterSeverity('low')}
+          >
+            Low ({allPatterns.filter(p => p.severity === 'low').length})
+          </button>
+        </div>
       </div>
       
       <div className="pattern-content">
-        {allPatterns.length > 0 ? (
+        {filteredPatterns.length > 0 ? (
           <div className="patterns-list">
-            {allPatterns.map((pattern, index) => (
+            {filteredPatterns.map((pattern, index) => (
               <div 
                 key={`pattern-${index}`} 
                 className={`pattern-item ${getSeverityClass(pattern.severity)}`}
@@ -755,8 +893,14 @@ const TransactionPatternDetector = ({ transaction, inputs, outputs }) => {
           </div>
         ) : (
           <div className="no-patterns">
-            <p>No suspicious patterns detected in this transaction.</p>
-            <p className="pattern-note">Note: Analysis depth is limited to {maxDepth} transaction levels.</p>
+            {filterSeverity === 'all' ? (
+              <>
+                <p>No suspicious patterns detected in this transaction.</p>
+                <p className="pattern-note">Note: Analysis depth is limited to {maxDepth} transaction levels.</p>
+              </>
+            ) : (
+              <p>No patterns found with {filterSeverity} severity. Try adjusting the filter.</p>
+            )}
           </div>
         )}
       </div>

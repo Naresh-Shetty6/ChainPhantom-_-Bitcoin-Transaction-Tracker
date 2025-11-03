@@ -304,7 +304,7 @@ body, html {
 }
 
 .table tbody tr:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(74, 159, 255, 0.08) !important;
 }
 
 .address-cell {
@@ -442,9 +442,13 @@ body, html {
 }
 
 .table-dark {
-  background-color: #0f1e2d;
+  background-color: #0c1525 !important;
   color: #e9ecef;
   margin-bottom: 0;
+}
+
+.table-dark tbody {
+  background-color: #0c1525 !important;
 }
 
 .table-dark thead th {
@@ -461,10 +465,11 @@ body, html {
 .table-dark tbody tr {
   border-bottom: 1px solid #1e3a5f;
   transition: background-color 0.2s ease;
+  background-color: #0c1525 !important;
 }
 
 .table-dark tbody tr:hover {
-  background-color: #162c41;
+  background-color: rgba(74, 159, 255, 0.08) !important;
 }
 
 .selected-row {
@@ -824,4 +829,60 @@ footer {
 
 .content-container .row:first-child {
   margin-top: 0;
+}
+
+/* CRITICAL FIX: Override all table backgrounds - MUST BE LAST */
+.blocks-table-container table,
+.blocks-table-container .table,
+.blocks-table-container tbody,
+.blocks-table-container tbody tr,
+.blocks-table-container tbody tr td,
+.transaction-table-container table,
+.transaction-table-container .table,
+.transaction-table-container tbody,
+.transaction-table-container tbody tr,
+.transaction-table-container tbody tr td {
+  background-color: #0c1525 !important;
+  background: #0c1525 !important;
+}
+
+/* Override Bootstrap striped tables */
+.table-striped tbody tr:nth-of-type(odd),
+.table-striped tbody tr:nth-of-type(even) {
+  background-color: #0c1525 !important;
+}
+
+/* Hover effect */
+.blocks-table-container tbody tr:hover,
+.blocks-table-container tbody tr:hover td,
+.transaction-table-container tbody tr:hover,
+.transaction-table-container tbody tr:hover td {
+  background-color: rgba(74, 159, 255, 0.08) !important;
+  background: rgba(74, 159, 255, 0.08) !important;
+}
+
+/* Fix text visibility - make all headings and text more visible */
+h1, h2, h3, h4, h5, h6 {
+  color: #e8f0f8 !important;
+  font-weight: 600 !important;
+}
+
+.network-stats-container h2,
+.recent-transactions-panel h2,
+.recent-blocks-panel h2 {
+  color: #ffffff !important;
+}
+
+/* Fix all text colors for better visibility */
+p, span, div, label {
+  color: #d0dce8 !important;
+}
+
+/* Ensure links remain blue */
+a {
+  color: #5db0ff !important;
+}
+
+a:hover {
+  color: #90d5ff !important;
 }

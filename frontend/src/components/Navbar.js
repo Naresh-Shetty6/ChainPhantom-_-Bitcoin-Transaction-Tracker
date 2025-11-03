@@ -65,20 +65,26 @@ const Navbar = () => {
               </Link>
             </li>
             <li className="nav-item dropdown">
-              <button 
-                className="nav-link dropdown-toggle" 
-                type="button" 
-                data-bs-toggle="dropdown" 
-                aria-expanded="false"
-                style={{ background: 'none', border: 'none', cursor: 'pointer' }}
-              >
-                <i className="fas fa-tools me-1"></i>Tools
-              </button>
+              <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i className="fas fa-tools me-1"></i>Analysis Tools
+              </a>
               <ul className="dropdown-menu dropdown-menu-dark">
-                <li><Link className="dropdown-item" to="/api" onClick={() => setIsMenuOpen(false)}>API</Link></li>
-                <li><Link className="dropdown-item" to="/visualizer" onClick={() => setIsMenuOpen(false)}>Transaction Visualizer</Link></li>
+                <li><Link className="dropdown-item" to="/forensics" onClick={() => setIsMenuOpen(false)}>
+                  <i className="fas fa-shield-alt me-2"></i>Forensic Analyzer
+                </Link></li>
+                <li><Link className="dropdown-item" to="/multichain" onClick={() => setIsMenuOpen(false)}>
+                  <i className="fas fa-network-wired me-2"></i>Multi-Chain Analysis
+                </Link></li>
+                <li><Link className="dropdown-item" to="/detector" onClick={() => setIsMenuOpen(false)}>
+                  <i className="fas fa-exclamation-triangle me-2"></i>Pattern Detection
+                </Link></li>
+                <li><Link className="dropdown-item" to="/wallet-monitor" onClick={() => setIsMenuOpen(false)}>
+                  <i className="fas fa-wallet me-2"></i>Wallet Monitor
+                </Link></li>
                 <li><hr className="dropdown-divider" /></li>
-                <li><Link className="dropdown-item" to="/detector" onClick={() => setIsMenuOpen(false)}>Suspicious Activity Detector</Link></li>
+                <li><Link className="dropdown-item" to="/api" onClick={() => setIsMenuOpen(false)}>
+                  <i className="fas fa-code me-2"></i>API Documentation
+                </Link></li>
               </ul>
             </li>
           </ul>

@@ -1,0 +1,165 @@
+.exchange-detection-container {
+  margin-bottom: 2rem;
+}
+
+.exchange-detection-card {
+  background-color: #1e2130;
+  border: 1px solid #2d3748;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.exchange-detection-card .card-header {
+  background-color: #1a2035;
+  border-bottom: 1px solid #2d3748;
+  color: #e0e0e0;
+  font-weight: 600;
+}
+
+.risk-badge {
+  font-size: 0.9rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.service-summary {
+  background-color: #0f1e2d;
+  border-radius: 6px;
+  padding: 1.5rem;
+}
+
+.service-stat {
+  text-align: center;
+  padding: 1rem;
+}
+
+.service-stat .fa-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
+  margin: 0.5rem 0;
+}
+
+.stat-label {
+  color: #8aa2c7;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.service-section {
+  border-left: 4px solid #3498db;
+  padding-left: 1rem;
+  margin-left: 0.5rem;
+}
+
+.service-section-title {
+  color: #e0e0e0;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.service-table {
+  background-color: #0f1e2d;
+  color: #e0e0e0;
+}
+
+.service-table th {
+  background-color: #1a2035;
+  border-color: #2d3748;
+  color: #a0aec0;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.service-table td {
+  border-color: #2d3748;
+  vertical-align: middle;
+}
+
+.service-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.tx-hash {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.85rem;
+}
+
+.lea-actions-card {
+  background-color: #1e2130;
+  border: 1px solid #2d3748;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.lea-actions-card .card-header {
+  background-color: #1a2035;
+  border-bottom: 1px solid #2d3748;
+  color: #e0e0e0;
+  font-weight: 600;
+}
+
+.lea-action-alert {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-left: 4px solid;
+  margin-bottom: 1rem;
+}
+
+.lea-action-alert.alert-danger {
+  border-left-color: #dc3545;
+  background-color: rgba(220, 53, 69, 0.1);
+}
+
+.lea-action-alert.alert-warning {
+  border-left-color: #ffc107;
+  background-color: rgba(255, 193, 7, 0.1);
+}
+
+.lea-action-alert.alert-info {
+  border-left-color: #17a2b8;
+  background-color: rgba(23, 162, 184, 0.1);
+}
+
+.recommendation {
+  background-color: rgba(40, 167, 69, 0.1);
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  border-left: 3px solid #28a745;
+}
+
+.legal-basis {
+  background-color: rgba(23, 162, 184, 0.1);
+  padding: 0.5rem;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+  border-left: 3px solid #17a2b8;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .service-summary .row {
+    text-align: center;
+  }
+  
+  .service-stat {
+    margin-bottom: 1rem;
+  }
+  
+  .stat-number {
+    font-size: 1.5rem;
+  }
+  
+  .service-table {
+    font-size: 0.85rem;
+  }
+  
+  .tx-hash {
+    font-size: 0.75rem;
+  }
+}

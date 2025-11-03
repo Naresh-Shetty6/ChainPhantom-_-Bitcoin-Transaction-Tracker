@@ -1,0 +1,122 @@
+.multichain-dashboard {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f1419 0%, #1a2332 50%, #0f1e2d 100%);
+  padding: 2rem 0;
+}
+
+.search-panel {
+  position: sticky;
+  top: 2rem;
+  height: fit-content;
+}
+
+.results-panel {
+  min-height: 80vh;
+}
+
+.welcome-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+}
+
+.welcome-content {
+  max-width: 600px;
+  padding: 3rem;
+  background-color: rgba(30, 33, 48, 0.8);
+  border-radius: 12px;
+  border: 1px solid #2d3748;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.welcome-content h3 {
+  color: #e0e0e0;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  font-size: 2rem;
+}
+
+.welcome-content p {
+  color: #a0aec0;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.features-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border-left: 4px solid #3182ce;
+  transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.feature-item i {
+  color: #3182ce;
+  font-size: 1.2rem;
+  margin-right: 0.75rem;
+  width: 20px;
+  text-align: center;
+}
+
+.feature-item span {
+  color: #e0e0e0;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Responsive design */
+@media (max-width: 992px) {
+  .search-panel {
+    position: relative;
+    top: 0;
+    margin-bottom: 2rem;
+  }
+  
+  .welcome-content {
+    padding: 2rem;
+  }
+  
+  .welcome-content h3 {
+    font-size: 1.5rem;
+  }
+  
+  .features-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .multichain-dashboard {
+    padding: 1rem 0;
+  }
+  
+  .welcome-content {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+  
+  .welcome-content h3 {
+    font-size: 1.3rem;
+  }
+  
+  .welcome-content p {
+    font-size: 1rem;
+  }
+}

@@ -12,6 +12,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { API_KEY } from '../config';
 import TransactionChainVisualization from './TransactionChainVisualization';
+import TransactionPatternDetector from './TransactionPatternDetector';
 import { generateMockTransactionChain, processTransactionChainData } from '../utils/mockDataGenerator';
 import { Button, Spinner } from 'react-bootstrap';
 import jsPDF from 'jspdf';
@@ -42,6 +43,7 @@ const TransactionDetails = () => {
   const [transactionChainData, setTransactionChainData] = useState([]);
   const [exportPdfFunction, setExportPdfFunction] = useState(null);
   const [isPdfGenerating, setIsPdfGenerating] = useState(false);
+  const [patternDetectionData, setPatternDetectionData] = useState(null);
   
   const graphRef = useRef(null);
   const searchInputRef = useRef(null);
@@ -637,20 +639,15 @@ const TransactionDetails = () => {
         </div>
       </div>
       
-      {/* Suspicious pattern detection - First image */}
-      <div className="suspicious-pattern-section">
-        <div className="section-title">
-          <FontAwesomeIcon icon={faExclamationTriangle} /> Suspicious Pattern Detection
-            </div>
-        <div className="suspicious-pattern-content">
-          <div className="no-patterns-message">
-            No suspicious patterns detected in this transaction.
-          </div>
-          <div className="analysis-note">
-            Note: Analysis depth is limited to 3 transaction levels.
-          </div>
-            </div>
-                    </div>
+      {/* Suspicious pattern detection - Enhanced Pattern Detector */}
+      {transaction && normalizedTx.vin && normalizedTx.vout && (
+        <TransactionPatternDetector 
+          transaction={transaction}
+          inputs={normalizedTx.vin}
+          outputs={normalizedTx.vout}
+          onPatternDataChange={setPatternDetectionData}
+        />
+      )}
       
       {/* Transaction Addresses Summary - Second image */}
       <div className="addresses-outer-container">
@@ -836,12 +833,24 @@ const TransactionDetails = () => {
           <button 
             className="export-btn json"
             onClick={() => {
-              const jsonData = JSON.stringify(transaction, null, 2);
+              // Combine transaction data with pattern detection data
+              const exportData = {
+                transaction: transaction,
+                patternAnalysis: patternDetectionData || {
+                  riskScore: 0,
+                  patterns: [],
+                  timestamp: new Date().toISOString(),
+                  message: "No pattern analysis available"
+                },
+                exportedAt: new Date().toISOString()
+              };
+              
+              const jsonData = JSON.stringify(exportData, null, 2);
               const blob = new Blob([jsonData], { type: 'application/json' });
               const url = URL.createObjectURL(blob);
               const a = document.createElement('a');
               a.href = url;
-              a.download = `transaction_${transaction.txid.substring(0, 8)}.json`;
+              a.download = `transaction_analysis_${transaction.txid.substring(0, 8)}.json`;
               document.body.appendChild(a);
               a.click();
               document.body.removeChild(a);
@@ -853,18 +862,45 @@ const TransactionDetails = () => {
           <button 
             className="export-btn csv"
             onClick={() => {
-              // Generate CSV content
-              const headers = ["Type", "Address", "Amount"];
-              let csvContent = headers.join(",") + "\n";
+              // Generate CSV content with pattern analysis
+              let csvContent = "ChainPhantom Transaction Analysis Report\n";
+              csvContent += `Generated: ${new Date().toLocaleString()}\n`;
+              csvContent += `Transaction ID: ${transaction.txid}\n\n`;
+              
+              // Add Pattern Analysis Section
+              csvContent += "=== PATTERN ANALYSIS ===\n";
+              if (patternDetectionData && patternDetectionData.patterns && patternDetectionData.patterns.length > 0) {
+                csvContent += `Risk Score: ${patternDetectionData.riskScore}/100\n`;
+                csvContent += `Analysis Date: ${new Date(patternDetectionData.timestamp).toLocaleString()}\n\n`;
+                
+                csvContent += "Pattern Type,Severity,Description\n";
+                patternDetectionData.patterns.forEach(pattern => {
+                  // Escape commas in description
+                  const description = pattern.description.replace(/,/g, ';');
+                  csvContent += `${pattern.type},${pattern.severity.toUpperCase()},"${description}"\n`;
+                });
+              } else {
+                csvContent += "Risk Score: 0/100\n";
+                csvContent += "No suspicious patterns detected\n";
+              }
+              
+              csvContent += "\n=== TRANSACTION DETAILS ===\n";
+              csvContent += `Size: ${transaction.size} bytes\n`;
+              csvContent += `Fee: ${(transaction.fee / 100000000).toFixed(8)} BTC\n`;
+              csvContent += `Status: ${transaction.block_height ? 'Confirmed' : 'Unconfirmed'}\n\n`;
               
               // Add input data
+              csvContent += "=== INPUTS ===\n";
+              csvContent += "Type,Address,Amount (BTC)\n";
               transaction.vin.forEach(input => {
-                csvContent += `Input,${input.addr},${(input.value / 100000000).toFixed(8)}\n`;
+                csvContent += `Input,${input.addr || 'Unknown'},${input.value ? (input.value / 100000000).toFixed(8) : 'Unknown'}\n`;
               });
               
               // Add output data
+              csvContent += "\n=== OUTPUTS ===\n";
+              csvContent += "Type,Address,Amount (BTC)\n";
               transaction.vout.forEach(output => {
-                csvContent += `Output,${output.scriptPubKey?.addresses?.[0] || "Unknown"},${output.value}\n`;
+                csvContent += `Output,${output.scriptPubKey?.addresses?.[0] || "Unknown"},${output.value || 'Unknown'}\n`;
               });
               
               // Create and download file
@@ -872,7 +908,7 @@ const TransactionDetails = () => {
               const url = URL.createObjectURL(blob);
               const a = document.createElement('a');
               a.href = url;
-              a.download = `transaction_${transaction.txid.substring(0, 8)}.csv`;
+              a.download = `transaction_analysis_${transaction.txid.substring(0, 8)}.csv`;
               document.body.appendChild(a);
               a.click();
               document.body.removeChild(a);
@@ -1008,6 +1044,134 @@ const TransactionDetails = () => {
                     pdf.text(title, margin + 4, y + 6);
                     return y + 12;
                   };
+                  
+                  // Pattern Analysis Section
+                  yPosition = addSectionHeader("Pattern Analysis", yPosition);
+                  
+                  if (patternDetectionData && patternDetectionData.patterns && patternDetectionData.patterns.length > 0) {
+                    // Risk Score Box
+                    const riskScore = patternDetectionData.riskScore;
+                    let riskColor, riskLevel;
+                    
+                    if (riskScore >= 70) {
+                      riskColor = [231, 76, 60]; // Red
+                      riskLevel = 'CRITICAL';
+                    } else if (riskScore >= 50) {
+                      riskColor = [243, 156, 18]; // Orange
+                      riskLevel = 'HIGH';
+                    } else if (riskScore >= 30) {
+                      riskColor = [241, 196, 15]; // Yellow
+                      riskLevel = 'MEDIUM';
+                    } else if (riskScore >= 10) {
+                      riskColor = [52, 152, 219]; // Blue
+                      riskLevel = 'LOW';
+                    } else {
+                      riskColor = [46, 204, 113]; // Green
+                      riskLevel = 'MINIMAL';
+                    }
+                    
+                    // Risk score display box
+                    pdf.setFillColor(240, 240, 245);
+                    pdf.roundedRect(margin, yPosition, contentWidth, 15, 2, 2, 'F');
+                    
+                    pdf.setFontSize(11);
+                    pdf.setFont("helvetica", "bold");
+                    pdf.setTextColor(80, 80, 80);
+                    pdf.text("Risk Score:", margin + 5, yPosition + 6);
+                    
+                    pdf.setFontSize(14);
+                    pdf.setTextColor(riskColor[0], riskColor[1], riskColor[2]);
+                    pdf.text(`${riskScore}/100`, margin + 35, yPosition + 6);
+                    
+                    pdf.setFontSize(11);
+                    pdf.text(`(${riskLevel} RISK)`, margin + 60, yPosition + 6);
+                    
+                    pdf.setFontSize(9);
+                    pdf.setTextColor(100, 100, 100);
+                    pdf.setFont("helvetica", "normal");
+                    pdf.text(`Analysis Date: ${new Date(patternDetectionData.timestamp).toLocaleString()}`, margin + 5, yPosition + 12);
+                    
+                    yPosition += 20;
+                    
+                    // Patterns table
+                    pdf.setFillColor(240, 240, 245);
+                    pdf.rect(margin, yPosition, contentWidth, 7, 'F');
+                    
+                    pdf.setTextColor(80, 80, 80);
+                    pdf.setFontSize(9);
+                    pdf.setFont("helvetica", "bold");
+                    pdf.text("Pattern Type", margin + 3, yPosition + 5);
+                    pdf.text("Severity", margin + 50, yPosition + 5);
+                    pdf.text("Description", margin + 75, yPosition + 5);
+                    
+                    yPosition += 10;
+                    
+                    // Pattern details
+                    pdf.setFont("helvetica", "normal");
+                    patternDetectionData.patterns.forEach((pattern, index) => {
+                      // Check if we need a new page
+                      if (yPosition > pageHeight - 30) {
+                        pdf.addPage();
+                        yPosition = margin + 10;
+                      }
+                      
+                      // Alternating row background
+                      if (index % 2 === 1) {
+                        pdf.setFillColor(248, 248, 250);
+                        pdf.rect(margin, yPosition - 5, contentWidth, 10, 'F');
+                      }
+                      
+                      // Set color based on severity
+                      let severityColor;
+                      if (pattern.severity === 'high') {
+                        severityColor = [231, 76, 60]; // Red
+                      } else if (pattern.severity === 'medium') {
+                        severityColor = [243, 156, 18]; // Orange
+                      } else {
+                        severityColor = [52, 152, 219]; // Blue
+                      }
+                      
+                      pdf.setTextColor(50, 50, 50);
+                      pdf.text(pattern.type.replace(/_/g, ' ').toUpperCase(), margin + 3, yPosition);
+                      
+                      pdf.setTextColor(severityColor[0], severityColor[1], severityColor[2]);
+                      pdf.setFont("helvetica", "bold");
+                      pdf.text(pattern.severity.toUpperCase(), margin + 50, yPosition);
+                      
+                      pdf.setFont("helvetica", "normal");
+                      pdf.setTextColor(50, 50, 50);
+                      // Wrap description text if too long
+                      const maxWidth = contentWidth - 80;
+                      const descriptionLines = pdf.splitTextToSize(pattern.description, maxWidth);
+                      pdf.text(descriptionLines[0], margin + 75, yPosition);
+                      
+                      yPosition += 10;
+                    });
+                    
+                    yPosition += 5;
+                  } else {
+                    // No patterns detected
+                    pdf.setFillColor(240, 248, 245);
+                    pdf.roundedRect(margin, yPosition, contentWidth, 12, 2, 2, 'F');
+                    
+                    pdf.setTextColor(46, 204, 113);
+                    pdf.setFontSize(11);
+                    pdf.setFont("helvetica", "bold");
+                    pdf.text("✓ No suspicious patterns detected", margin + 5, yPosition + 8);
+                    
+                    pdf.setFontSize(9);
+                    pdf.setTextColor(100, 100, 100);
+                    pdf.setFont("helvetica", "normal");
+                    pdf.text("Risk Score: 0/100 (MINIMAL RISK)", margin + contentWidth - 60, yPosition + 8);
+                    
+                    yPosition += 17;
+                  }
+                  
+                  // Check if we need a new page before inputs section
+                  if (yPosition > pageHeight - 60) {
+                    pdf.addPage();
+                    yPosition = margin + 10;
+                  }
                   
                   // Inputs section with tabular format
                   yPosition = addSectionHeader("Input Addresses", yPosition);

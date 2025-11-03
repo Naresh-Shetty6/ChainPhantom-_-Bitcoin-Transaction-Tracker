@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, useNavigate, useParams } from 'react-router-dom';
+import { Routes, Route, useNavigate, useParams, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import Navbar from './components/Navbar';
 import SearchBar from './components/SearchBar';
 import Dashboard from './components/Dashboard';
 import TransactionTable from './components/TransactionTable';
 import SuspiciousPatterns from './components/SuspiciousPatterns';
-import Footer from './components/Footer';
-import SearchHistory from './components/SearchHistory';
+import TransactionChain from './components/TransactionChain';
+import TransactionGraph from './components/TransactionGraph';
+import ExchangeDetection from './components/ExchangeDetection';
+import MultiChainDashboard from './components/MultiChainDashboard';
+import ForensicAnalyzer from './components/ForensicAnalyzer';
+import AdvancedForensics from './components/AdvancedForensics';
+import EnhancedMultiChain from './components/EnhancedMultiChain';
 import TransactionDetails from './components/TransactionDetails';
 import Blocks from './components/Blocks';
 import Network from './components/Network';
 import RecentTransactions from './components/RecentTransactions';
+import WalletMonitor from './components/WalletMonitor';
 import './App.css';
 
 // Helper function to convert satoshis to BTC
@@ -26,6 +32,7 @@ function App() {
   const [searchResult, setSearchResult] = useState(null);
   const [searchType, setSearchType] = useState(null); // 'transaction', 'address', 'block'
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSearch = async (term, type) => {
     if (!term) return;
@@ -305,6 +312,9 @@ function App() {
         {/* Suspicious Patterns Detection */}
         <SuspiciousPatterns address={address} />
         
+        {/* Exchange Detection */}
+        <ExchangeDetection address={address} transactions={txs} />
+        
         <div className="card mt-4">
           <div className="card-header">
             <i className="fas fa-history me-2"></i>
@@ -332,27 +342,41 @@ function App() {
     useEffect(() => {
       const fetchAddressData = async () => {
         setLoading(true);
+        
         try {
-          const response = await fetch(`http://localhost:5000/api/address/${address}`);
-          if (!response.ok) {
+          const apiUrl = `http://localhost:5000/api/address/${address}`;
+          console.log('Frontend calling:', apiUrl);
+          
+          const response = await fetch(apiUrl);
+          const data = await response.json();
+          
+          console.log('Frontend received data:', data);
+          
+          if (response.ok && !data.error) {
+            console.log('Setting address data:', data);
+            setAddressData(data);
+          } else {
+            console.log('Response not OK or has error');
+            // Set empty data on error
             setAddressData({
               address: address,
               total_received: 0,
               total_sent: 0,
               balance: 0,
+              n_tx: 0,
               transactions: []
             });
-          } else {
-            const data = await response.json();
-            setAddressData(data);
           }
+          
         } catch (err) {
-          setError(err.message);
+          console.error('Frontend error:', err);
+          // Set empty data on error
           setAddressData({
             address: address,
             total_received: 0,
             total_sent: 0,
             balance: 0,
+            n_tx: 0,
             transactions: []
           });
         } finally {
@@ -389,34 +413,201 @@ function App() {
 
     return (
       <div className="container mt-4">
-        <div className="card mb-4">
-          <div className="card-header">
-            <h5>Address Details</h5>
+        {/* Address Header */}
+        <div className="card mb-4" style={{ backgroundColor: '#1a2637', border: '1px solid #2c3e50' }}>
+          <div className="card-header" style={{ backgroundColor: '#0f1a2e', borderBottom: '2px solid #3498db' }}>
+            <h5 style={{ color: '#ffffff', margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <i className="fas fa-wallet" style={{ color: '#3498db' }}></i>
+              Wallet Address Details
+            </h5>
           </div>
           <div className="card-body">
-            <div className="row mb-3">
-              <div className="col-md-3"><strong>Address:</strong></div>
-              <div className="col-md-9 text-break">{addressData.address}</div>
+            <div style={{ 
+              fontFamily: 'monospace', 
+              fontSize: '0.95rem', 
+              color: '#4a9fff',
+              backgroundColor: '#0f1520',
+              padding: '12px',
+              borderRadius: '6px',
+              wordBreak: 'break-all',
+              border: '1px solid #2c3e50'
+            }}>
+              {addressData.address}
             </div>
-            <div className="row mb-3">
-              <div className="col-md-3"><strong>Balance:</strong></div>
-              <div className="col-md-9">{(addressData.balance / 100000000).toFixed(8)} BTC</div>
+          </div>
+        </div>
+
+        {/* Statistics Cards */}
+        <div className="row mb-4">
+          {/* Current Balance */}
+          <div className="col-md-3 col-sm-6 mb-3">
+            <div className="card" style={{ 
+              backgroundColor: '#1a2637', 
+              border: '1px solid #2c3e50',
+              height: '100%',
+              transition: 'transform 0.3s'
+            }}>
+              <div className="card-body" style={{ textAlign: 'center', padding: '20px' }}>
+                <div style={{ 
+                  fontSize: '2.5rem', 
+                  marginBottom: '10px',
+                  color: '#2ecc71'
+                }}>
+                  <i className="fas fa-coins"></i>
+                </div>
+                <h6 style={{ 
+                  color: '#8aa2c7', 
+                  fontSize: '0.85rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                  marginBottom: '10px'
+                }}>
+                  Current Balance
+                </h6>
+                <div style={{ 
+                  fontSize: '1.5rem', 
+                  fontWeight: '700',
+                  color: '#2ecc71',
+                  fontFamily: 'monospace'
+                }}>
+                  {(addressData.balance / 100000000).toFixed(8)}
+                </div>
+                <div style={{ fontSize: '0.9rem', color: '#8aa2c7', marginTop: '5px' }}>
+                  BTC
+                </div>
+              </div>
             </div>
-            <div className="row mb-3">
-              <div className="col-md-3"><strong>Total Received:</strong></div>
-              <div className="col-md-9">{(addressData.total_received / 100000000).toFixed(8)} BTC</div>
+          </div>
+
+          {/* Total Received */}
+          <div className="col-md-3 col-sm-6 mb-3">
+            <div className="card" style={{ 
+              backgroundColor: '#1a2637', 
+              border: '1px solid #2c3e50',
+              height: '100%',
+              transition: 'transform 0.3s'
+            }}>
+              <div className="card-body" style={{ textAlign: 'center', padding: '20px' }}>
+                <div style={{ 
+                  fontSize: '2.5rem', 
+                  marginBottom: '10px',
+                  color: '#3498db'
+                }}>
+                  <i className="fas fa-arrow-down"></i>
+                </div>
+                <h6 style={{ 
+                  color: '#8aa2c7', 
+                  fontSize: '0.85rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                  marginBottom: '10px'
+                }}>
+                  Total Received
+                </h6>
+                <div style={{ 
+                  fontSize: '1.5rem', 
+                  fontWeight: '700',
+                  color: '#3498db',
+                  fontFamily: 'monospace'
+                }}>
+                  {(addressData.total_received / 100000000).toFixed(8)}
+                </div>
+                <div style={{ fontSize: '0.9rem', color: '#8aa2c7', marginTop: '5px' }}>
+                  BTC (Lifetime)
+                </div>
+              </div>
             </div>
-            <div className="row mb-3">
-              <div className="col-md-3"><strong>Total Sent:</strong></div>
-              <div className="col-md-9">{(addressData.total_sent / 100000000).toFixed(8)} BTC</div>
+          </div>
+
+          {/* Total Sent */}
+          <div className="col-md-3 col-sm-6 mb-3">
+            <div className="card" style={{ 
+              backgroundColor: '#1a2637', 
+              border: '1px solid #2c3e50',
+              height: '100%',
+              transition: 'transform 0.3s'
+            }}>
+              <div className="card-body" style={{ textAlign: 'center', padding: '20px' }}>
+                <div style={{ 
+                  fontSize: '2.5rem', 
+                  marginBottom: '10px',
+                  color: '#e74c3c'
+                }}>
+                  <i className="fas fa-arrow-up"></i>
+                </div>
+                <h6 style={{ 
+                  color: '#8aa2c7', 
+                  fontSize: '0.85rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                  marginBottom: '10px'
+                }}>
+                  Total Sent
+                </h6>
+                <div style={{ 
+                  fontSize: '1.5rem', 
+                  fontWeight: '700',
+                  color: '#e74c3c',
+                  fontFamily: 'monospace'
+                }}>
+                  {(addressData.total_sent / 100000000).toFixed(8)}
+                </div>
+                <div style={{ fontSize: '0.9rem', color: '#8aa2c7', marginTop: '5px' }}>
+                  BTC (Lifetime)
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Transaction Count */}
+          <div className="col-md-3 col-sm-6 mb-3">
+            <div className="card" style={{ 
+              backgroundColor: '#1a2637', 
+              border: '1px solid #2c3e50',
+              height: '100%',
+              transition: 'transform 0.3s'
+            }}>
+              <div className="card-body" style={{ textAlign: 'center', padding: '20px' }}>
+                <div style={{ 
+                  fontSize: '2.5rem', 
+                  marginBottom: '10px',
+                  color: '#f39c12'
+                }}>
+                  <i className="fas fa-exchange-alt"></i>
+                </div>
+                <h6 style={{ 
+                  color: '#8aa2c7', 
+                  fontSize: '0.85rem',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                  marginBottom: '10px'
+                }}>
+                  Transactions
+                </h6>
+                <div style={{ 
+                  fontSize: '1.5rem', 
+                  fontWeight: '700',
+                  color: '#f39c12',
+                  fontFamily: 'monospace'
+                }}>
+                  {addressData.transactions ? addressData.transactions.length : 0}
+                </div>
+                <div style={{ fontSize: '0.9rem', color: '#8aa2c7', marginTop: '5px' }}>
+                  Total Count
+                </div>
+              </div>
             </div>
           </div>
         </div>
         
+        {/* Recent Transactions */}
         {addressData.transactions && addressData.transactions.length > 0 && (
-          <div className="card">
-            <div className="card-header">
-              <h5>Recent Transactions</h5>
+          <div className="card" style={{ backgroundColor: '#1a2637', border: '1px solid #2c3e50' }}>
+            <div className="card-header" style={{ backgroundColor: '#0f1a2e', borderBottom: '2px solid #3498db' }}>
+              <h5 style={{ color: '#ffffff', margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <i className="fas fa-list" style={{ color: '#3498db' }}></i>
+                Recent Transactions
+              </h5>
             </div>
             <div className="card-body">
               <TransactionTable transactions={addressData.transactions} />
@@ -445,8 +636,8 @@ function App() {
 
   // Wrap components that need URL parameters
   const AddressPage = () => {
-    const { address } = useParams();
-    return <AddressDetails address={address} />;
+    const { addressId } = useParams();
+    return <AddressDetails address={addressId} />;
   };
 
   const BlockPage = () => {
@@ -479,16 +670,19 @@ function App() {
       />
       <Navbar />
       
-      <div className="hero-section">
-        <div className="tagline">
-          <h1>ChainPhantom</h1>
-          <p>Trace the Trail of Crypto Transactions</p>
+      {/* Only show hero section on home page */}
+      {location.pathname === '/' && (
+        <div className="hero-section">
+          <div className="tagline">
+            <h1>ChainPhantom</h1>
+            <p>Trace the Trail of Crypto Transactions</p>
+          </div>
+          <div className="search-wrapper">
+            <SearchBar onSearch={handleSearch} />
+          </div>
+          {searchError && <div className="search-error">{searchError}</div>}
         </div>
-        <div className="search-wrapper">
-          <SearchBar onSearch={handleSearch} />
-        </div>
-        {searchError && <div className="search-error">{searchError}</div>}
-      </div>
+      )}
       
       <div className="container mt-4">
         <Routes>
@@ -505,6 +699,9 @@ function App() {
           <Route path="/blocks" element={<Blocks />} />
           <Route path="/network" element={<Network />} />
           <Route path="/detector" element={<SuspiciousPatterns />} />
+          <Route path="/wallet-monitor" element={<WalletMonitor />} />
+          <Route path="/multichain" element={<EnhancedMultiChain />} />
+          <Route path="/forensics" element={<AdvancedForensics />} />
           <Route path="/visualizer" element={<TransactionPage />} />
           <Route path="/api" element={
             <div className="my-5">
@@ -525,7 +722,6 @@ function App() {
           } />
         </Routes>
       </div>
-      <Footer />
     </div>
   );
 }
