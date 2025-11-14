@@ -1,6 +1,6 @@
 [build]
-  # Build command - install dependencies and build the React app
-  command = "npm run install:all && npm run build"
+  # Build command - just build the React app (dependencies already installed by Netlify)
+  command = "npm run build"
   
   # Publish directory - where the built React app files are located
   publish = "frontend/build"
