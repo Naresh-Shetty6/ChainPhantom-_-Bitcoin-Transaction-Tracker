@@ -307,7 +307,7 @@ const TransactionPatternDetector = ({ transaction, inputs, outputs, onPatternDat
           addressChains
         );
         
-        setTransactionChain(chain);
+        // setTransactionChain(chain); // Commented out since transactionChain state is not used
         
         // Apply detection algorithms to the chain
         const patterns = [];
