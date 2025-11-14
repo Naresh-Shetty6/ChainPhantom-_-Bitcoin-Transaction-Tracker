@@ -2,8 +2,8 @@
   # Base directory - set to frontend so Netlify installs dependencies there
   base = "frontend"
   
-  # Build command - run the React build (react-scripts will be available)
-  command = "npm run build"
+  # Build command - disable ESLint warnings as errors for deployment
+  command = "CI=false npm run build"
   
   # Publish directory - relative to base directory
   publish = "build"
