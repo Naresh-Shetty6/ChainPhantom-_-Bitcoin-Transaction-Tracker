@@ -1,7 +1,9 @@
-# ChainPhantom - Project Requirements
-# This file summarizes the main dependencies for both backend and frontend.
-# Install Node.js dependencies using npm in each subdirectory.
-
+```pip-requirements
+# ChainPhantom - Project Requirements (DISABLED)
+# This file summarized the main dependencies for both backend and frontend.
+# It was intentionally disabled because it contains npm package syntax and
+# caused Vercel to try `pip3 install` during deployments. Keep it here as a
+# reference, but do not use it with pip.
 # Backend (Node.js)
 express@^5.1.0
 axios@^1.8.4
@@ -37,4 +39,5 @@ file-saver@^2.0.5
 react-to-pdf@^2.0.0
 web-vitals@^2.1.4
 
-# See each package.json for the full list and versions. 
+# See each package.json for the full list and versions.
+```

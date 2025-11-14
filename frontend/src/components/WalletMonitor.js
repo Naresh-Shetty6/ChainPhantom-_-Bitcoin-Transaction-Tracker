@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './WalletMonitor.css';
+import EnhancedWalletRules from './EnhancedWalletRules';
+import EnhancedRulesSettings from './EnhancedRulesSettings';
 import { 
   FaWallet, FaPlus, FaTrash, FaBell, FaEnvelope, 
   FaCheckCircle, FaExclamationTriangle, FaClock,
@@ -11,6 +13,9 @@ const WalletMonitor = () => {
   const [newAddress, setNewAddress] = useState('');
   const [monitoringActive, setMonitoringActive] = useState(false);
   const [ncbEmail, setNcbEmail] = useState('ncb@gov.in');
+  
+  // Initialize enhanced wallet rules
+  const enhancedRules = EnhancedWalletRules();
   const [alertRules, setAlertRules] = useState({
     riskScoreThreshold: 50,
     enableHighSeverity: true,
@@ -85,7 +90,12 @@ const WalletMonitor = () => {
       lastChecked: null,
       transactionCount: 0,
       alertCount: 0,
-      lastAlert: null
+      lastAlert: null,
+      transactionHistory: [], // Store transaction history for rule evaluation
+      monthlyStats: {
+        averageDaily: 0,
+        lastCalculated: null
+      }
     };
 
     setWallets([...wallets, newWallet]);
@@ -120,10 +130,19 @@ const WalletMonitor = () => {
       const data = await response.json();
       const transactions = data.txs || [];
 
-      // Update wallet last checked time
+      // Update wallet with transaction history and stats
       setWallets(prev => prev.map(w => 
         w.id === wallet.id 
-          ? { ...w, lastChecked: new Date().toISOString(), transactionCount: data.n_tx }
+          ? { 
+              ...w, 
+              lastChecked: new Date().toISOString(), 
+              transactionCount: data.n_tx,
+              transactionHistory: transactions,
+              monthlyStats: {
+                averageDaily: enhancedRules.calculateMonthlyAverage(transactions),
+                lastCalculated: new Date().toISOString()
+              }
+            }
           : w
       ));
 
@@ -141,6 +160,23 @@ const WalletMonitor = () => {
   const analyzeTransaction = async (tx, wallet) => {
     const patterns = [];
     let riskScore = 0;
+
+    // *** NEW ENHANCED RULES EVALUATION ***
+    const triggeredRules = enhancedRules.evaluateWalletRules(wallet, tx);
+    
+    // Process triggered rules
+    triggeredRules.forEach(rule => {
+      patterns.push({
+        type: rule.rule,
+        severity: rule.severity,
+        details: rule.details
+      });
+      
+      // Add risk score based on rule severity
+      if (rule.severity === 'critical') riskScore += 40;
+      else if (rule.severity === 'high') riskScore += 30;
+      else if (rule.severity === 'medium') riskScore += 15;
+    });
 
     // Check for mixer patterns
     if (alertRules.alertOnMixer && tx.inputs?.length > 3 && tx.out?.length > 3) {
@@ -267,7 +303,19 @@ WALLET INFORMATION:
 - Transaction Hash: ${alert.transactionHash}
 
 DETECTED PATTERNS:
-${alert.patterns.map(p => `- ${p.type.toUpperCase()} (${p.severity.toUpperCase()} severity)`).join('\n')}
+${alert.patterns.map(p => {
+  let description = `- ${p.type.toUpperCase()} (${p.severity.toUpperCase()} severity)`;
+  if (p.details) {
+    if (p.type === 'monthly_average_exceeded') {
+      description += `\n  Transaction: ${p.details.transactionValue} BTC | Monthly Avg: ${p.details.monthlyAverage.toFixed(2)} BTC/day | Threshold: ${p.details.threshold.toFixed(2)} BTC`;
+    } else if (p.type === 'fast_succession_transactions') {
+      description += `\n  ${p.details.transactionCount} transactions in ${p.details.timeWindowHours} hours (threshold: ${p.details.threshold})`;
+    } else if (p.type === 'lump_sum_transaction') {
+      description += `\n  Amount: ${p.details.transactionValue} BTC (threshold: ${p.details.threshold} BTC)`;
+    }
+  }
+  return description;
+}).join('\n')}
 
 ACTION REQUIRED:
 Please investigate this transaction immediately.
@@ -510,6 +558,15 @@ This is an automated alert from ChainPhantom Wallet Monitoring System.
                 Fast Succession Detection
               </label>
             </div>
+            
+            {/* Enhanced Wallet Rules Settings */}
+            <EnhancedRulesSettings 
+              enhancedRules={enhancedRules}
+              onRulesChange={(newRules) => {
+                // Handle rules change if needed
+                console.log('Enhanced rules updated:', newRules);
+              }}
+            />
           </div>
         )}
       </div>

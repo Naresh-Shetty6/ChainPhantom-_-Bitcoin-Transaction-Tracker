@@ -208,16 +208,30 @@
   transform: translateY(-2px);
 }
 
+.pattern-critical {
+  border-left: 4px solid #8e44ad;
+  background-color: rgba(142, 68, 173, 0.1);
+  animation: pulse-critical 2s infinite;
+}
+
 .pattern-high {
   border-left: 4px solid #e74c3c;
+  background-color: rgba(231, 76, 60, 0.1);
 }
 
 .pattern-medium {
   border-left: 4px solid #f39c12;
+  background-color: rgba(243, 156, 18, 0.1);
 }
 
 .pattern-low {
   border-left: 4px solid #3498db;
+  background-color: rgba(52, 152, 219, 0.1);
+}
+
+@keyframes pulse-critical {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(142, 68, 173, 0.7); }
+  50% { box-shadow: 0 0 0 10px rgba(142, 68, 173, 0); }
 }
 
 .pattern-icon {
@@ -234,6 +248,10 @@
 
 .pattern-icon svg {
   font-size: 1.2rem;
+}
+
+.pattern-critical .pattern-icon {
+  color: #8e44ad;
 }
 
 .pattern-high .pattern-icon {

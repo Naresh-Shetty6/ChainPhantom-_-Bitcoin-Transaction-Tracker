@@ -1,0 +1,43 @@
+# ChainPhantom - Project Dependencies Summary
+# This is a documentation file only - NOT for pip installation
+# 
+# For actual installation:
+# - Backend dependencies: see backend/package.json
+# - Frontend dependencies: see frontend/package.json
+# 
+# Run: npm run install:all (from root directory)
+
+## Backend (Node.js) - see backend/package.json
+- express@^5.1.0
+- axios@^1.8.4  
+- cors@^2.8.5
+- node-fetch@^2.7.0
+
+## Frontend (React) - see frontend/package.json  
+- react@^18.2.0
+- react-dom@^18.2.0
+- react-router-dom@^6.21.0
+- react-scripts@5.0.1
+- react-bootstrap@^2.10.9
+- bootstrap@^5.3.5
+- @fortawesome/fontawesome-svg-core@^6.7.2
+- @fortawesome/free-solid-svg-icons@^6.7.2
+- @fortawesome/react-fontawesome@^0.2.2
+- @react-pdf/renderer@^3.4.0
+- @testing-library/dom@^10.4.0
+- @testing-library/jest-dom@^6.6.3
+- @testing-library/react@^16.3.0
+- @testing-library/user-event@^13.5.0
+- d3@^7.9.0
+- date-fns@^4.1.0
+- html2canvas@^1.4.1
+- jspdf@^3.0.1
+- jspdf-autotable@^5.0.2
+- react-hot-toast@^2.5.2
+- react-icons@^5.5.0
+- autoprefixer@^10.4.21
+- postcss@^8.5.3
+- tailwindcss@^4.1.4
+- file-saver@^2.0.5
+- react-to-pdf@^2.0.0
+- web-vitals@^2.1.4

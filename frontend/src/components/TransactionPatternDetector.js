@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './TransactionPatternDetector.css';
-import { FaExclamationTriangle, FaInfoCircle, FaExclamationCircle, FaSyncAlt, FaRandom, FaLayerGroup, FaHandHoldingUsd, FaShieldAlt, FaHourglass, FaMoneyBillWave, FaFilter, FaExpand, FaCompress } from 'react-icons/fa';
+import EnhancedWalletRules from './EnhancedWalletRules';
+import { FaExclamationTriangle, FaInfoCircle, FaExclamationCircle, FaSyncAlt, FaRandom, FaLayerGroup, FaHandHoldingUsd, FaShieldAlt, FaHourglass, FaMoneyBillWave, FaFilter, FaExpand, FaCompress, FaChartLine, FaClock, FaCoins } from 'react-icons/fa';
 
 const TransactionPatternDetector = ({ transaction, inputs, outputs, onPatternDataChange }) => {
   const [patterns, setPatterns] = useState([]);
@@ -14,6 +15,9 @@ const TransactionPatternDetector = ({ transaction, inputs, outputs, onPatternDat
   const [expandedView, setExpandedView] = useState(false);
   const [patternTimeline, setPatternTimeline] = useState([]);
   const maxDepth = 3; // Define maxDepth as a constant
+  
+  // Initialize enhanced wallet rules
+  const enhancedRules = EnhancedWalletRules();
   
   // Update API key fallback and remove it from the API calls
   const API_KEY = process.env.REACT_APP_BLOCKCHAIN_API_KEY || '';
@@ -172,6 +176,45 @@ const TransactionPatternDetector = ({ transaction, inputs, outputs, onPatternDat
     
     // Simple pattern detection based on inputs/outputs
     const detectedPatterns = [];
+    
+    // *** ENHANCED WALLET RULES EVALUATION ***
+    // Create mock wallet data for rule evaluation
+    const mockWallet = {
+      address: inputs[0]?.prev_out?.addr || 'unknown',
+      transactionHistory: [transaction], // Current transaction
+      monthlyStats: {
+        averageDaily: 0.1, // Mock average for demonstration
+        lastCalculated: new Date().toISOString()
+      }
+    };
+    
+    // Evaluate enhanced wallet rules
+    const triggeredRules = enhancedRules.evaluateWalletRules(mockWallet, transaction);
+    
+    // Add triggered rules to detected patterns
+    triggeredRules.forEach(rule => {
+      let icon = <FaInfoCircle />;
+      let description = '';
+      
+      if (rule.rule === 'monthly_average_exceeded') {
+        icon = <FaChartLine />;
+        description = `Transaction (${rule.details.transactionValue.toFixed(2)} BTC) exceeds monthly average threshold (${rule.details.threshold.toFixed(2)} BTC)`;
+      } else if (rule.rule === 'fast_succession_transactions') {
+        icon = <FaClock />;
+        description = `${rule.details.transactionCount} transactions detected within ${rule.details.timeWindowHours} hours (threshold: ${rule.details.threshold})`;
+      } else if (rule.rule === 'lump_sum_transaction') {
+        icon = <FaCoins />;
+        description = `Large transaction amount: ${rule.details.transactionValue.toFixed(2)} BTC (threshold: ${rule.details.threshold} BTC)`;
+      }
+      
+      detectedPatterns.push({
+        type: rule.rule,
+        severity: rule.severity,
+        description: description,
+        icon: icon,
+        details: rule.details
+      });
+    });
     
     // Check for round number outputs (potential structuring)
     const roundNumberOutputs = outputs.filter(output => {
@@ -663,6 +706,7 @@ const TransactionPatternDetector = ({ transaction, inputs, outputs, onPatternDat
   // Calculate risk score based on detected patterns
   const calculateRiskScore = useCallback((patterns) => {
     const weights = {
+      critical: 40, // Enhanced rules critical severity
       high: 30,
       medium: 15,
       low: 5
@@ -728,6 +772,8 @@ const TransactionPatternDetector = ({ transaction, inputs, outputs, onPatternDat
   // Get CSS class based on severity
   const getSeverityClass = (severity) => {
     switch (severity) {
+      case 'critical':
+        return 'pattern-critical';
       case 'high':
         return 'pattern-high';
       case 'medium':
@@ -756,6 +802,13 @@ const TransactionPatternDetector = ({ transaction, inputs, outputs, onPatternDat
         return <FaHourglass />;
       case 'layering':
         return <FaMoneyBillWave />;
+      // Enhanced wallet rules icons
+      case 'monthly_average_exceeded':
+        return <FaChartLine />;
+      case 'fast_succession_transactions':
+        return <FaClock />;
+      case 'lump_sum_transaction':
+        return <FaCoins />;
       default:
         return <FaExclamationTriangle />;
     }
@@ -849,6 +902,12 @@ const TransactionPatternDetector = ({ transaction, inputs, outputs, onPatternDat
             onClick={() => setFilterSeverity('all')}
           >
             All ({allPatterns.length})
+          </button>
+          <button 
+            className={`filter-btn ${filterSeverity === 'critical' ? 'active' : ''}`}
+            onClick={() => setFilterSeverity('critical')}
+          >
+            Critical ({allPatterns.filter(p => p.severity === 'critical').length})
           </button>
           <button 
             className={`filter-btn ${filterSeverity === 'high' ? 'active' : ''}`}
