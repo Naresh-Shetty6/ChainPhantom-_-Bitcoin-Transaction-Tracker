@@ -8,19 +8,19 @@ const TransactionPatternDetector = ({ transaction, inputs, outputs, onPatternDat
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [detectedPatterns, setDetectedPatterns] = useState([]);
-  const [transactionChain, setTransactionChain] = useState(null);
-  const [analysisDepth, setAnalysisDepth] = useState(3);
+  // const [transactionChain, setTransactionChain] = useState(null);
+  // const [analysisDepth, setAnalysisDepth] = useState(3);
   const [riskScore, setRiskScore] = useState(0);
   const [filterSeverity, setFilterSeverity] = useState('all');
   const [expandedView, setExpandedView] = useState(false);
-  const [patternTimeline, setPatternTimeline] = useState([]);
+  // const [patternTimeline, setPatternTimeline] = useState([]);
   const maxDepth = 3; // Define maxDepth as a constant
   
   // Initialize enhanced wallet rules
   const enhancedRules = EnhancedWalletRules();
   
   // Update API key fallback and remove it from the API calls
-  const API_KEY = process.env.REACT_APP_BLOCKCHAIN_API_KEY || '';
+  // const API_KEY = process.env.REACT_APP_BLOCKCHAIN_API_KEY || '';
 
   // Build a transaction chain by recursively following inputs and outputs
   const buildTransactionChain = useCallback(async (txHash, depth = 0, visitedAddresses = new Set(), visitedTransactions = new Set(), addressChains = new Map(), parentAddress = null) => {
@@ -275,7 +275,7 @@ const TransactionPatternDetector = ({ transaction, inputs, outputs, onPatternDat
           type: 'peeling',
           severity: 'medium',
           description: 'Potential peeling chain pattern detected',
-          icon: <FaExclamationCircle />
+          icon: <FaLayerGroup />
         });
       }
     }
@@ -283,17 +283,7 @@ const TransactionPatternDetector = ({ transaction, inputs, outputs, onPatternDat
     // Set the detected patterns
     setPatterns(detectedPatterns);
     setLoading(false);
-  }, [transaction, inputs, outputs]);
-
-  // Effect hook to analyze the transaction when it changes
-  useEffect(() => {
-    if (!transaction || !inputs || !outputs) {
-      setLoading(false);
-      return;
-    }
-
-    analyzeTransaction();
-  }, [transaction, inputs, outputs, analyzeTransaction]);
+  }, [transaction, inputs, outputs, enhancedRules]);
 
   useEffect(() => {
     if (!transaction) {
