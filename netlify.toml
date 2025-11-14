@@ -1,12 +1,12 @@
 [build]
-  # Build command - just build the React app (dependencies already installed by Netlify)
+  # Base directory - set to frontend so Netlify installs dependencies there
+  base = "frontend"
+  
+  # Build command - run the React build (react-scripts will be available)
   command = "npm run build"
   
-  # Publish directory - where the built React app files are located
-  publish = "frontend/build"
-  
-  # Base directory for the build (optional, but helps with monorepo structure)
-  base = "."
+  # Publish directory - relative to base directory
+  publish = "build"
 
 [build.environment]
   # Set Node.js version for consistent builds
