@@ -182,14 +182,14 @@ export const processTransactionChainData = (transactions, mainTxId) => {
     return { nodes: [], links: [] };
   }
 
-  // Find the main transaction
-  const mainTx = transactions.find(tx => tx.hash === mainTxId) || transactions[0];
+  // Find the main transaction (for future use)
+  // const mainTx = transactions.find(tx => tx.hash === mainTxId) || transactions[0];
   
-  // Create a map of transactions by ID for quick lookup
-  const txMap = transactions.reduce((map, tx) => {
-    map[tx.hash] = tx;
-    return map;
-  }, {});
+  // Create a map of transactions by ID for quick lookup (for future use)
+  // const txMap = transactions.reduce((map, tx) => {
+  //   map[tx.hash] = tx;
+  //   return map;
+  // }, {});
 
   // Collect all addresses involved
   const addresses = new Set();

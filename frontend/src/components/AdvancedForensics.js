@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, Form, Button, Alert, Table, Badge, Row, Col, Tabs, Tab, ProgressBar, InputGroup } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
-  faSearch, faShieldAlt, faExclamationTriangle, faBuilding,
-  faUserSecret, faChartLine, faFileExport, faGavel, faNetworkWired,
-  faWallet, faCoins, faClock, faArrowRight, faDownload, faEye
+  faSearch, faShieldAlt, faExclamationTriangle, faGavel,
+  faArrowRight, faDownload, faEye
 } from '@fortawesome/free-solid-svg-icons';
 import './AdvancedForensics.css';
 

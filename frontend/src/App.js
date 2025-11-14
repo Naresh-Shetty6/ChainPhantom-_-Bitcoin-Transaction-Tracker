@@ -6,11 +6,7 @@ import SearchBar from './components/SearchBar';
 import Dashboard from './components/Dashboard';
 import TransactionTable from './components/TransactionTable';
 import SuspiciousPatterns from './components/SuspiciousPatterns';
-import TransactionChain from './components/TransactionChain';
-import TransactionGraph from './components/TransactionGraph';
 import ExchangeDetection from './components/ExchangeDetection';
-import MultiChainDashboard from './components/MultiChainDashboard';
-import ForensicAnalyzer from './components/ForensicAnalyzer';
 import AdvancedForensics from './components/AdvancedForensics';
 import EnhancedMultiChain from './components/EnhancedMultiChain';
 import TransactionDetails from './components/TransactionDetails';
@@ -20,25 +16,15 @@ import RecentTransactions from './components/RecentTransactions';
 import WalletMonitor from './components/WalletMonitor';
 import './App.css';
 
-// Helper function to convert satoshis to BTC
-const satoshisToBTC = (satoshis) => {
-  return (satoshis / 100000000).toFixed(8);
-};
 
 function App() {
-  const [transactions, setTransactions] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [searchError, setSearchError] = useState('');
-  const [searchResult, setSearchResult] = useState(null);
-  const [searchType, setSearchType] = useState(null); // 'transaction', 'address', 'block'
   const navigate = useNavigate();
   const location = useLocation();
 
   const handleSearch = async (term, type) => {
     if (!term) return;
     
-    setSearchType(type);
-    setLoading(true);
     setSearchError('');
     
     try {
@@ -50,282 +36,12 @@ function App() {
       } else if (type === 'block') {
         navigate(`/block/${term}`);
       } else {
-        // If type is not explicitly provided, try to determine it
-        const response = await fetch(`http://localhost:5000/api/search/${term}`);
-        if (!response.ok) {
-          throw new Error('No data found for the provided input.');
-        }
-        
-        const data = await response.json();
-        setTransactions(data.transactions || []);
-        setSearchResult({
-          query: term,
-          data: data
-        });
-        
         // Default to transaction if we can't determine type
         navigate(`/tx/${term}`);
       }
     } catch (err) {
       setSearchError(err.message || 'Something went wrong.');
-    } finally {
-      setLoading(false);
     }
-  };
-
-  const renderTransactionDetails = (tx) => {
-    if (!tx) return null;
-
-    const getFeeRateClass = (feeRate) => {
-      if (feeRate > 100) return 'fee-high';
-      if (feeRate > 50) return 'fee-medium';
-      if (feeRate > 10) return 'fee-low';
-      return 'fee-very-low';
-    };
-
-    // Helper function to safely format values
-    const safeNumber = (value, defaultValue = 0) => {
-      return value !== undefined && value !== null ? value : defaultValue;
-    };
-
-    return (
-      <div className="transaction-details-container">
-        <h2 className="mb-4">Transaction Details</h2>
-
-        <div className="card mb-4">
-          <div className="card-body">
-            <div className="row">
-              <div className="col-lg-6">
-                <div className="mb-3">
-                  <div className="detail-label">Hash</div>
-                  <div className="detail-value hash">{tx.hash || 'Unknown'}</div>
-                </div>
-                <div className="mb-3">
-                  <div className="detail-label">Status</div>
-                  <div className="detail-value">
-                    <span className={`badge ${tx.confirmed ? 'bg-success' : 'bg-warning'}`}>
-                      {tx.confirmed ? 'Confirmed' : 'Unconfirmed'}
-                    </span>
-                  </div>
-                </div>
-                {tx.block_height && (
-                  <div className="mb-3">
-                    <div className="detail-label">Block</div>
-                    <div className="detail-value">
-                      <a href={`/block/${tx.block_height}`} className="block-link">
-                        {tx.block_height || 'Pending'}
-                      </a>
-                    </div>
-                  </div>
-                )}
-                <div className="mb-3">
-                  <div className="detail-label">Timestamp</div>
-                  <div className="detail-value">{tx.time ? new Date(tx.time * 1000).toLocaleString() : 'Unknown'}</div>
-                </div>
-              </div>
-              <div className="col-lg-6">
-                <div className="mb-3">
-                  <div className="detail-label">Size</div>
-                  <div className="detail-value">{safeNumber(tx.size).toLocaleString()} bytes</div>
-                </div>
-                <div className="mb-3">
-                  <div className="detail-label">Weight</div>
-                  <div className="detail-value">{safeNumber(tx.weight).toLocaleString()} WU</div>
-                </div>
-                <div className="mb-3">
-                  <div className="detail-label">Virtual Size</div>
-                  <div className="detail-value">{safeNumber(tx.vsize).toLocaleString()} vB</div>
-                </div>
-                <div className="mb-3">
-                  <div className="detail-label">Version</div>
-                  <div className="detail-value">{tx.version}</div>
-                </div>
-                <div className="mb-3">
-                  <div className="detail-label">Fee</div>
-                  <div className="detail-value">{(safeNumber(tx.fee) / 100000000).toFixed(8)} BTC</div>
-                </div>
-                <div className="mb-3">
-                  <div className="detail-label">Fee Rate</div>
-                  <div className="detail-value">
-                    <span className={`fee-badge ${getFeeRateClass(safeNumber(tx.fee_rate))}`}>
-                      {safeNumber(tx.fee_rate).toFixed(2)} sat/vB
-                    </span> 
-                  </div>
-                </div>
-                <div className="mb-3">
-                  <div className="detail-label">Locktime</div>
-                  <div className="detail-value">{tx.locktime}</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="input-output-container">
-          <div className="inputs card mb-4">
-            <div className="card-header">Inputs ({(tx.vin || []).length})</div>
-            <div className="card-body">
-              {(tx.vin || []).map((input, index) => (
-                <div key={index} className="input-item mb-3">
-                  <div className="address-info">
-                    <div className="address-label">Address:</div>
-                    <div className="address-value">
-                      {input.prevout && input.prevout.scriptpubkey_address ? (
-                        <a href={`/address/${input.prevout.scriptpubkey_address}`} className="address-link">
-                          {input.prevout.scriptpubkey_address}
-                        </a>
-                      ) : (
-                        <span className="text-muted">No address (possibly coinbase)</span>
-                      )}
-                    </div>
-                  </div>
-                  <div className="value-info">
-                    <div className="value-label">Value:</div>
-                    <div className="value-amount">
-                      {input.prevout && input.prevout.value !== undefined ? (
-                        `${(input.prevout.value / 100000000).toFixed(8)} BTC`
-                      ) : (
-                        'Unknown value'
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
-              {(tx.vin || []).length === 0 && <div className="no-data">No inputs found</div>}
-            </div>
-          </div>
-          <div className="outputs card mb-4">
-            <div className="card-header">Outputs ({(tx.vout || []).length})</div>
-            <div className="card-body">
-              {(tx.vout || []).map((output, index) => (
-                <div key={index} className="output-item mb-3">
-                  <div className="address-info">
-                    <div className="address-label">Address:</div>
-                    <div className="address-value">
-                      {output.scriptpubkey_address ? (
-                        <a href={`/address/${output.scriptpubkey_address}`} className="address-link">
-                          {output.scriptpubkey_address}
-                        </a>
-                      ) : (
-                        <span className="text-muted">No address (possibly OP_RETURN)</span>
-                      )}
-                    </div>
-                  </div>
-                  <div className="value-info">
-                    <div className="value-label">Value:</div>
-                    <div className="value-amount">
-                      {output.value !== undefined ? (
-                        `${(output.value / 100000000).toFixed(8)} BTC`
-                      ) : (
-                        'Unknown value'
-                      )}
-                    </div>
-                  </div>
-                </div>
-              ))}
-              {(tx.vout || []).length === 0 && <div className="no-data">No outputs found</div>}
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const renderAddressDetails = (address, txs) => {
-    // Calculate total received and sent
-    let totalReceived = 0;
-    let totalSent = 0;
-    
-    txs.forEach(tx => {
-      // Find outputs to this address (received)
-      tx.outputs?.forEach(output => {
-        if (output.addresses?.includes(address)) {
-          totalReceived += output.value || 0;
-        }
-      });
-      
-      // Find inputs from this address (sent)
-      tx.inputs?.forEach(input => {
-        if (input.addresses?.includes(address)) {
-          totalSent += input.output_value || 0;
-        }
-      });
-    });
-    
-    const balance = totalReceived - totalSent;
-    
-    return (
-      <div className="container mt-4">
-        <div className="card">
-          <div className="card-header d-flex justify-content-between align-items-center">
-            <div>
-              <i className="fas fa-wallet me-2"></i>
-              Address Details
-            </div>
-            <div className="hash-display">
-              <small className="text-muted text-truncate" style={{fontFamily: 'monospace'}}>{address}</small>
-            </div>
-          </div>
-          <div className="card-body">
-            <div className="row">
-              <div className="col-md-6">
-                <div className="row mb-3">
-                  <div className="col-md-4 fw-bold">Balance:</div>
-                  <div className="col-md-8 text-info">
-                    {(balance / 1e8).toFixed(8)} BTC
-                  </div>
-                </div>
-                <div className="row mb-3">
-                  <div className="col-md-4 fw-bold">Total Received:</div>
-                  <div className="col-md-8">
-                    {(totalReceived / 1e8).toFixed(8)} BTC
-                  </div>
-                </div>
-              </div>
-              <div className="col-md-6">
-                <div className="row mb-3">
-                  <div className="col-md-4 fw-bold">Total Sent:</div>
-                  <div className="col-md-8">
-                    {(totalSent / 1e8).toFixed(8)} BTC
-                  </div>
-                </div>
-                <div className="row mb-3">
-                  <div className="col-md-4 fw-bold">Transactions:</div>
-                  <div className="col-md-8">
-                    {txs.length}
-                  </div>
-                </div>
-              </div>
-            </div>
-            
-            {/* QR Code placeholder for wallets */}
-            <div className="row mt-3">
-              <div className="col-md-12 text-center">
-                <div className="qr-code-placeholder">
-                  <i className="fas fa-qrcode"></i>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        {/* Suspicious Patterns Detection */}
-        <SuspiciousPatterns address={address} />
-        
-        {/* Exchange Detection */}
-        <ExchangeDetection address={address} transactions={txs} />
-        
-        <div className="card mt-4">
-          <div className="card-header">
-            <i className="fas fa-history me-2"></i>
-            Transaction History
-          </div>
-          <div className="card-body p-0">
-            <TransactionTable transactions={txs} />
-          </div>
-        </div>
-      </div>
-    );
   };
 
   // Component for Transaction Details

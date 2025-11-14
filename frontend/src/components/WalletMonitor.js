@@ -154,7 +154,7 @@ const WalletMonitor = () => {
     } catch (error) {
       console.error(`Error checking wallet ${wallet.address}:`, error);
     }
-  }, []);
+  }, [enhancedRules]);
 
   // Analyze transaction for suspicious patterns
   const analyzeTransaction = async (tx, wallet) => {
