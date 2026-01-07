@@ -47,8 +47,8 @@
 
 /* PDF report content styling */
 .report-content {
-  background-color: white;
-  color: #333;
+  background-color: #0c1525;
+  color: #e0e0e0;
   padding: 40px;
   margin: 0 auto;
   max-width: 800px;
@@ -59,17 +59,17 @@
   text-align: center;
   margin-bottom: 30px;
   padding-bottom: 20px;
-  border-bottom: 2px solid #eee;
+  border-bottom: 2px solid #1a2637;
 }
 
 .report-header h2 {
   margin: 0;
-  color: #2c3e50;
+  color: #e0e0e0;
   font-size: 24px;
 }
 
 .report-timestamp {
-  color: #7f8c8d;
+  color: #94a3b8;
   font-size: 14px;
   margin-top: 5px;
 }
@@ -79,11 +79,11 @@
 }
 
 .report-section h3 {
-  color: #2c3e50;
+  color: #e0e0e0;
   font-size: 18px;
   margin-bottom: 15px;
   padding-bottom: 5px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #1a2637;
 }
 
 .report-table {
@@ -96,33 +96,38 @@
 .report-table td {
   padding: 8px 12px;
   text-align: left;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #1a2637;
+  color: #e0e0e0;
 }
 
 .report-table th {
-  background-color: #f9f9f9;
+  background-color: #0c1525;
   font-weight: bold;
-  color: #2c3e50;
+  color: #a8c5e0;
 }
 
 .report-table tr:nth-child(even) {
-  background-color: #f9f9f9;
+  background-color: #121924;
+}
+
+.report-table tr:nth-child(odd) {
+  background-color: #0c1525;
 }
 
 .no-data {
-  color: #7f8c8d;
+  color: #94a3b8;
   font-style: italic;
   text-align: center;
   padding: 15px;
-  background-color: #f9f9f9;
+  background-color: #121924;
   border-radius: 4px;
 }
 
 .report-footer {
   margin-top: 40px;
   padding-top: 20px;
-  border-top: 2px solid #eee;
-  color: #7f8c8d;
+  border-top: 2px solid #1a2637;
+  color: #94a3b8;
   font-size: 12px;
   text-align: center;
 }

@@ -6,8 +6,9 @@ import './TransactionReport.css';
 const styles = StyleSheet.create({
   page: {
     padding: 40,
-    backgroundColor: '#ffffff',
+    backgroundColor: '#0c1525',
     fontFamily: 'Helvetica',
+    color: '#e0e0e0',
   },
   header: {
     fontSize: 26,

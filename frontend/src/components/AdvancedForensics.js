@@ -5,9 +5,12 @@ import {
   faSearch, faShieldAlt, faExclamationTriangle, faGavel,
   faArrowRight, faDownload, faEye
 } from '@fortawesome/free-solid-svg-icons';
+import { useNetwork } from '../contexts/NetworkContext';
+import { getTestnetForensicAnalysis } from '../utils/testnetMockData';
 import './AdvancedForensics.css';
 
 const AdvancedForensics = () => {
+  const { isTestnet } = useNetwork();
   const [searchInput, setSearchInput] = useState('');
   const [searchType, setSearchType] = useState('address');
   const [network, setNetwork] = useState('bitcoin');
@@ -42,6 +45,47 @@ const AdvancedForensics = () => {
 
     try {
       let analysisData = {};
+
+      // Use testnet mock data if in testnet mode
+      if (isTestnet) {
+        setTimeout(() => {
+          if (searchType === 'address') {
+            const mockAnalysis = getTestnetForensicAnalysis(searchInput);
+            analysisData = {
+              type: 'address',
+              address: searchInput,
+              network: network,
+              balance: Math.random() * 100,
+              totalReceived: mockAnalysis.totalVolume,
+              totalSent: mockAnalysis.totalVolume * 0.9,
+              transactionCount: mockAnalysis.transactionCount,
+              transactions: [],
+              riskScore: mockAnalysis.riskScore,
+              suspiciousPatterns: mockAnalysis.patterns,
+              exchangeInfo: [],
+              clustering: {},
+              timeline: []
+            };
+          } else {
+            // Transaction analysis for testnet
+            const { getTestnetTransaction } = require('../utils/testnetMockData');
+            const mockTx = getTestnetTransaction(searchInput);
+            analysisData = {
+              type: 'transaction',
+              hash: searchInput,
+              network: network,
+              transaction: mockTx,
+              riskScore: Math.floor(Math.random() * 100),
+              suspiciousPatterns: [],
+              exchangeInfo: []
+            };
+          }
+          setResults(analysisData);
+          setActiveTab('analysis');
+          setLoading(false);
+        }, 800);
+        return;
+      }
 
       if (searchType === 'address') {
         // Address analysis

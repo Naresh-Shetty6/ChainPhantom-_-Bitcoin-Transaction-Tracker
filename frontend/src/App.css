@@ -861,6 +861,65 @@ footer {
   background: rgba(74, 159, 255, 0.08) !important;
 }
 
+/* GLOBAL DARK THEME OVERRIDE - Force dark backgrounds, no white */
+* {
+  /* Override any white backgrounds */
+}
+
+table, 
+table tbody, 
+table tbody tr, 
+table tbody tr td,
+.table,
+.table tbody,
+.table tbody tr,
+.table tbody tr td,
+tbody,
+tbody tr,
+tbody tr td {
+  background-color: #0c1525 !important;
+  background: #0c1525 !important;
+  color: #e0e0e0 !important;
+}
+
+/* Override Bootstrap default white backgrounds */
+.table-striped tbody tr:nth-of-type(odd),
+.table-striped tbody tr:nth-of-type(even),
+.table-hover tbody tr:hover,
+.table-hover tbody tr:hover td {
+  background-color: #0c1525 !important;
+  background: #0c1525 !important;
+}
+
+/* Card backgrounds - dark only */
+.card,
+.card-body,
+.card-header {
+  background-color: #0c1525 !important;
+  background: #0c1525 !important;
+  color: #e0e0e0 !important;
+}
+
+/* Form elements - dark only */
+.form-control,
+.input-group,
+.input-group-text {
+  background-color: #121924 !important;
+  background: #121924 !important;
+  color: #e0e0e0 !important;
+  border-color: #1a2637 !important;
+}
+
+/* Modal and dropdown - dark only */
+.modal-content,
+.modal-header,
+.modal-body,
+.dropdown-menu {
+  background-color: #0c1525 !important;
+  background: #0c1525 !important;
+  color: #e0e0e0 !important;
+}
+
 /* Fix text visibility - make all headings and text more visible */
 h1, h2, h3, h4, h5, h6 {
   color: #e8f0f8 !important;

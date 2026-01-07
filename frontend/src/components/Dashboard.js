@@ -4,12 +4,19 @@ import { formatDistanceToNow } from 'date-fns';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCube, faExchangeAlt, faNetworkWired, faChartLine } from '@fortawesome/free-solid-svg-icons';
+import { useNetwork } from '../contexts/NetworkContext';
+import { 
+  getTestnetDashboardStats, 
+  getTestnetRecentBlocks, 
+  getTestnetRecentTransactions 
+} from '../utils/testnetMockData';
 
 // API key for blockchain.info
 const API_KEY = process.env.REACT_APP_BLOCKCHAIN_API_KEY || '';
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { isTestnet } = useNetwork();
   const [stats, setStats] = useState({
     latestBlock: {
       height: 0,
@@ -56,6 +63,25 @@ const Dashboard = () => {
 
   // Connect to blockchain.info WebSocket API for real-time transaction updates
   useEffect(() => {
+    // Use testnet mock data if in testnet mode - simulate transactions
+    if (isTestnet) {
+      const interval = setInterval(() => {
+        const mockTx = getTestnetRecentTransactions(1)[0];
+        setRecentTransactions(prevTx => {
+          return [mockTx, ...prevTx.slice(0, maxTransactions - 1)];
+        });
+        setStats(prevStats => ({
+          ...prevStats,
+          mempool: {
+            ...prevStats.mempool,
+            txCount: prevStats.mempool.txCount + 1
+          }
+        }));
+      }, 10000); // Add a new transaction every 10 seconds
+      
+      return () => clearInterval(interval);
+    }
+    
     const connectWebSocket = () => {
       try {
         // Close existing connection if any
@@ -207,7 +233,7 @@ const Dashboard = () => {
         socketRef.current.close(1000);
       }
     };
-  }, [connectionError]);
+  }, [connectionError, isTestnet]);
 
   // Fetch block details when we get a new block
   const fetchBlockDetails = async (blockHash) => {
@@ -277,6 +303,26 @@ const Dashboard = () => {
   // Fetch latest blocks on component mount
   useEffect(() => {
     const fetchRecentBlocks = async () => {
+      // Use testnet mock data if in testnet mode
+      if (isTestnet) {
+        const mockBlocks = getTestnetRecentBlocks(4);
+        setRecentBlocks(mockBlocks);
+        if (mockBlocks.length > 0) {
+          const latestBlock = mockBlocks[0];
+          setStats(prevStats => ({
+            ...prevStats,
+            latestBlock: {
+              height: latestBlock.height,
+              hash: latestBlock.hash,
+              time: latestBlock.time,
+              txCount: latestBlock.txCount,
+              size: latestBlock.size
+            }
+          }));
+        }
+        return;
+      }
+      
       try {
         console.log('Fetching recent blocks');
         // Try blockchain.info API first
@@ -450,11 +496,21 @@ const Dashboard = () => {
     // Refresh every minute instead of 2 minutes to ensure we get updates faster
     const intervalId = setInterval(fetchRecentBlocks, 60000);
     return () => clearInterval(intervalId);
-  }, []);
+  }, [isTestnet]);
 
   // Fetch mempool and network stats
   useEffect(() => {
     const fetchLatestBlock = async () => {
+      // Use testnet mock data if in testnet mode
+      if (isTestnet) {
+        const mockStats = getTestnetDashboardStats();
+        setStats(prevStats => ({
+          ...prevStats,
+          ...mockStats
+        }));
+        return;
+      }
+      
       try {
         console.log('Fetching latest block');
         // Try multiple APIs for latest block data
@@ -562,6 +618,16 @@ const Dashboard = () => {
 
     // Fetch mempool stats and fee recommendations
     const fetchMempoolStats = async () => {
+      // Use testnet mock data if in testnet mode
+      if (isTestnet) {
+        const mockStats = getTestnetDashboardStats();
+        setStats(prevStats => ({
+          ...prevStats,
+          mempool: mockStats.mempool
+        }));
+        return;
+      }
+      
       try {
         console.log('Fetching mempool stats');
         // Fetch fee recommendations from mempool.space API (more accurate than blockchain.info)
@@ -604,6 +670,16 @@ const Dashboard = () => {
 
     // Fetch network stats
     const fetchNetworkStats = async () => {
+      // Use testnet mock data if in testnet mode
+      if (isTestnet) {
+        const mockStats = getTestnetDashboardStats();
+        setStats(prevStats => ({
+          ...prevStats,
+          network: mockStats.network
+        }));
+        return;
+      }
+      
       try {
         console.log('Fetching network stats');
         // Fetch current difficulty and hashrate
@@ -668,7 +744,7 @@ const Dashboard = () => {
       clearInterval(mempoolIntervalId);
       clearInterval(networkIntervalId);
     };
-  }, []);
+  }, [isTestnet]);
 
   const formatBytes = (bytes) => {
     if (bytes < 1024) return bytes + ' B';

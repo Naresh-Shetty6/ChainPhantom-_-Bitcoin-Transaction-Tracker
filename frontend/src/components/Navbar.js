@@ -1,19 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useNetwork } from '../contexts/NetworkContext';
 import './Navbar.css';
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [networkType, setNetworkType] = useState('Mainnet');
-
-  // Function to toggle network between Mainnet and Testnet
-  const toggleNetwork = () => {
-    const newNetwork = networkType === 'Mainnet' ? 'Testnet' : 'Mainnet';
-    setNetworkType(newNetwork);
-    // Add network switching logic here (e.g., changing API endpoints)
-    console.log(`Switched to ${newNetwork}`);
-  };
+  const { networkType, toggleNetwork } = useNetwork();
 
   // Toggle mobile menu
   const toggleMenu = () => {

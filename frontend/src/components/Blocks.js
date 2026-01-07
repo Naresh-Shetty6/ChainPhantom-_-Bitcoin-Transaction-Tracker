@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import { useNetwork } from '../contexts/NetworkContext';
+import { getTestnetBlocks } from '../utils/testnetMockData';
 import './blocks-transactions.css';
 
 const Blocks = () => {
+  const { isTestnet } = useNetwork();
   const [blocks, setBlocks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -16,6 +19,17 @@ const Blocks = () => {
 
   const fetchRecentBlocks = useCallback(async () => {
     setLoading(true);
+    
+    // Use testnet mock data if in testnet mode
+    if (isTestnet) {
+      setTimeout(() => {
+        const mockBlocks = getTestnetBlocks(10);
+        setBlocks(mockBlocks);
+        setLoading(false);
+        setError(null);
+      }, 500);
+      return;
+    }
     
     for (let i = 0; i < API_ENDPOINTS.length; i++) {
       try {
@@ -94,7 +108,7 @@ const Blocks = () => {
     }, 60000); // Update every minute
     
     return () => clearInterval(intervalId);
-  }, [fetchRecentBlocks, retryCount]);
+  }, [fetchRecentBlocks, retryCount, isTestnet]);
 
   // Format time to human-readable format
   const formatTime = (timestamp) => {

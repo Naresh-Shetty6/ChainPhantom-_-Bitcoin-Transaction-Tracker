@@ -1,9 +1,13 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import './TransactionPatternDetector.css';
 import EnhancedWalletRules from './EnhancedWalletRules';
+import { useNetwork } from '../contexts/NetworkContext';
+import { getTestnetPatternDetection } from '../utils/testnetMockData';
+import { API_KEY } from '../config';
 import { FaExclamationTriangle, FaInfoCircle, FaExclamationCircle, FaSyncAlt, FaRandom, FaLayerGroup, FaHandHoldingUsd, FaShieldAlt, FaHourglass, FaMoneyBillWave, FaFilter, FaExpand, FaCompress, FaChartLine, FaClock, FaCoins } from 'react-icons/fa';
 
 const TransactionPatternDetector = ({ transaction, inputs, outputs, onPatternDataChange }) => {
+  const { isTestnet } = useNetwork();
   const [patterns, setPatterns] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -15,13 +19,12 @@ const TransactionPatternDetector = ({ transaction, inputs, outputs, onPatternDat
   const [expandedView, setExpandedView] = useState(false);
   // const [patternTimeline, setPatternTimeline] = useState([]);
   const maxDepth = 3; // Define maxDepth as a constant
+  const isFetchingRef = useRef(false); // Prevent multiple simultaneous fetches
+  const lastProcessedTxRef = useRef(null); // Track last processed transaction
   
   // Initialize enhanced wallet rules
   const enhancedRules = EnhancedWalletRules();
   
-  // Update API key fallback and remove it from the API calls
-  // const API_KEY = process.env.REACT_APP_BLOCKCHAIN_API_KEY || '';
-
   // Build a transaction chain by recursively following inputs and outputs
   const buildTransactionChain = useCallback(async (txHash, depth = 0, visitedAddresses = new Set(), visitedTransactions = new Set(), addressChains = new Map(), parentAddress = null) => {
     if (depth >= maxDepth) {
@@ -29,8 +32,11 @@ const TransactionPatternDetector = ({ transaction, inputs, outputs, onPatternDat
     }
     
     try {
-      // Fetch transaction data
-      const response = await fetch(`https://blockchain.info/rawtx/${txHash}`);
+      // Fetch transaction data with API key if available
+      const apiUrl = API_KEY 
+        ? `https://blockchain.info/rawtx/${txHash}?api_code=${API_KEY}`
+        : `https://blockchain.info/rawtx/${txHash}`;
+      const response = await fetch(apiUrl);
       
       if (!response.ok) {
         throw new Error(`Failed to fetch transaction: ${txHash}`);
@@ -88,8 +94,11 @@ const TransactionPatternDetector = ({ transaction, inputs, outputs, onPatternDat
         // For each output address, check for further transactions
         for (const outputAddr of outputAddresses) {
           try {
-            // Fetch next transactions for this address
-            const addrResponse = await fetch(`https://blockchain.info/rawaddr/${outputAddr.address}?limit=10`); // Increased limit to catch more patterns
+            // Fetch next transactions for this address with API key if available
+            const addrApiUrl = API_KEY
+              ? `https://blockchain.info/rawaddr/${outputAddr.address}?limit=10&api_code=${API_KEY}`
+              : `https://blockchain.info/rawaddr/${outputAddr.address}?limit=10`;
+            const addrResponse = await fetch(addrApiUrl);
             
             if (!addrResponse.ok) {
               continue;
@@ -285,6 +294,11 @@ const TransactionPatternDetector = ({ transaction, inputs, outputs, onPatternDat
     setLoading(false);
   }, [transaction, inputs, outputs, enhancedRules]);
 
+  // Get stable transaction identifier for dependency
+  const txHash = transaction?.hash || transaction?.txid;
+  const inputsLength = inputs?.length || 0;
+  const outputsLength = outputs?.length || 0;
+  
   useEffect(() => {
     if (!transaction) {
       setError('No transaction data provided for pattern detection');
@@ -293,10 +307,74 @@ const TransactionPatternDetector = ({ transaction, inputs, outputs, onPatternDat
     }
     
     const detectSuspiciousPatterns = async () => {
+      // Check if we've already processed this exact transaction
+      if (lastProcessedTxRef.current === txHash) {
+        return; // Already processed, skip
+      }
+      
+      // Prevent multiple simultaneous fetches (prevents flickering)
+      if (isFetchingRef.current) {
+        return;
+      }
+      
+      isFetchingRef.current = true;
+      lastProcessedTxRef.current = txHash;
       setLoading(true);
       setError(null);
       
+      // Use testnet mock data if in testnet mode
+      if (isTestnet) {
+        try {
+          // Create a transaction object with the inputs and outputs for pattern detection
+          const txForAnalysis = {
+            ...transaction,
+            inputs: inputs || transaction.inputs || transaction.vin,
+            out: outputs || transaction.out || transaction.vout,
+            vin: inputs || transaction.vin || transaction.inputs,
+            vout: outputs || transaction.vout || transaction.out
+          };
+          
+          const mockPatternData = getTestnetPatternDetection(txForAnalysis);
+          
+          // Check if we got valid pattern data
+          if (mockPatternData && mockPatternData.patterns) {
+            // Convert mock patterns to component format
+            const formattedPatterns = mockPatternData.patterns.map(pattern => ({
+              type: pattern.type,
+              severity: pattern.severity,
+              description: pattern.description,
+              icon: getPatternIconForType(pattern.type)
+            }));
+            
+            setDetectedPatterns(formattedPatterns);
+            setRiskScore(mockPatternData.riskScore || 0);
+          } else {
+            // No patterns detected
+            setDetectedPatterns([]);
+            setRiskScore(0);
+          }
+          
+          setLoading(false);
+          isFetchingRef.current = false;
+          return;
+        } catch (err) {
+          console.error('Error with testnet pattern detection:', err);
+          setError('Failed to analyze transaction patterns in testnet mode');
+          setDetectedPatterns([]);
+          setRiskScore(0);
+          setLoading(false);
+          isFetchingRef.current = false;
+          return;
+        }
+      }
+      
+      // Mainnet mode - use API with proper error handling
       try {
+        // Check if API key is configured
+        if (!API_KEY) {
+          console.warn('No API key configured. Pattern detection may be rate limited.');
+        }
+        
         // Use the buildTransactionChain with proper parameters
         const addressChains = new Map();
         const chain = await buildTransactionChain(
@@ -381,16 +459,76 @@ const TransactionPatternDetector = ({ transaction, inputs, outputs, onPatternDat
         }
         
         setDetectedPatterns([...patterns]);
+        
+        // Calculate risk score based on patterns
+        const totalRisk = patterns.reduce((sum, pattern) => {
+          const severityScore = {
+            'critical': 25,
+            'high': 20,
+            'medium': 10,
+            'low': 5
+          };
+          return sum + (severityScore[pattern.severity] || 0);
+        }, 0);
+        setRiskScore(Math.min(totalRisk, 100));
+        
       } catch (error) {
         console.error('Error detecting transaction patterns:', error);
-        setError('Failed to analyze transaction patterns: ' + error.message);
+        
+        // Check if it's a rate limit error
+        if (error.message.includes('429') || error.message.includes('rate limit')) {
+          setError('API rate limit reached. Please wait a moment or add an API key to .env file (REACT_APP_BLOCKCHAIN_API_KEY).');
+        } else if (error.message.includes('Failed to fetch')) {
+          setError('Network error. Please check your internet connection.');
+        } else {
+          setError('Failed to analyze transaction patterns. ' + error.message);
+        }
+        
+        // Set empty patterns on error
+        setDetectedPatterns([]);
+        setRiskScore(0);
       } finally {
         setLoading(false);
+        isFetchingRef.current = false;
       }
     };
     
     detectSuspiciousPatterns();
-  }, [transaction, buildTransactionChain, maxDepth]);
+    
+    // Cleanup function to reset fetching flag when transaction changes
+    return () => {
+      isFetchingRef.current = false;
+      // Note: We keep lastProcessedTxRef so we don't re-process same tx
+    };
+  }, [txHash, inputsLength, outputsLength, isTestnet]); // Use stable values instead of object references
+  
+  // Helper function to get icon for pattern type
+  const getPatternIconForType = (type) => {
+    switch (type) {
+      case 'all_funds_sent':
+      case 'large_single_transaction':
+        return <FaCoins />;
+      case 'peeling_chain':
+        return <FaLayerGroup />;
+      case 'multiple_inputs_consolidation':
+      case 'consolidation':
+        return <FaRandom />;
+      case 'coinjoin':
+        return <FaRandom />;
+      case 'no_change_address':
+        return <FaExclamationCircle />;
+      case 'round_amounts':
+        return <FaInfoCircle />;
+      case 'lump_sum_transaction':
+        return <FaCoins />;
+      case 'exceeds_monthly_average':
+        return <FaChartLine />;
+      case 'high_frequency_short_span':
+        return <FaClock />;
+      default:
+        return <FaExclamationTriangle />;
+    }
+  };
 
   // Detect loops in transaction chains
   const detectLoops = (addressChains) => {

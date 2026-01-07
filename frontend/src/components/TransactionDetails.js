@@ -14,10 +14,13 @@ import { API_KEY } from '../config';
 import TransactionChainVisualization from './TransactionChainVisualization';
 import TransactionPatternDetector from './TransactionPatternDetector';
 import { generateMockTransactionChain, processTransactionChainData } from '../utils/mockDataGenerator';
+import { useNetwork } from '../contexts/NetworkContext';
+import { getTestnetTransaction, getTestnetPatternDetection } from '../utils/testnetMockData';
 import { Button, Spinner } from 'react-bootstrap';
 import jsPDF from 'jspdf';
 
 const TransactionDetails = () => {
+  const { isTestnet } = useNetwork();
   const [transaction, setTransaction] = useState(null);
   const [senderAddresses, setSenderAddresses] = useState([]);
   const [receiverAddresses, setReceiverAddresses] = useState([]);
@@ -54,6 +57,35 @@ const TransactionDetails = () => {
     const fetchTransactionData = async () => {
       setLoading(true);
       setError(null);
+      
+      // Use testnet mock data if in testnet mode
+      if (isTestnet) {
+        setTimeout(() => {
+          const mockTx = getTestnetTransaction(txId);
+          
+          // Check if the mock transaction has an error
+          if (mockTx && mockTx.error) {
+            setError(mockTx.friendlyMessage || mockTx.message || 'Transaction not found');
+            setLoading(false);
+            return;
+          }
+          
+          // Process valid transaction
+          if (mockTx && mockTx.inputs && mockTx.out) {
+            const senders = mockTx.inputs.map(input => input.prev_out.addr);
+            const receivers = mockTx.out.map(output => output.addr);
+            
+            setTransaction(mockTx);
+            setSenderAddresses(senders);
+            setReceiverAddresses(receivers);
+          } else {
+            setError('Invalid transaction data received');
+          }
+          
+          setLoading(false);
+        }, 500);
+        return;
+      }
       
       try {
         // Fetch real transaction data from the blockchain.info API
@@ -169,7 +201,7 @@ const TransactionDetails = () => {
     if (txId) {
       fetchTransactionData();
     }
-  }, [txId, API_KEY]);
+  }, [txId, API_KEY, isTestnet]);
 
   // Separate effect for fetching related transactions when transaction data is ready
   useEffect(() => {
@@ -506,8 +538,8 @@ const TransactionDetails = () => {
     }
   }, [traceDepth, transaction]);
 
-  // Normalize transaction data to ensure inputs and outputs are accessible
-  const normalizeTransaction = () => {
+  // Get normalized transaction data (memoized to prevent unnecessary re-renders)
+  const normalizedTx = useMemo(() => {
     if (!transaction) return {};
     
     // Handle blockchain.info api format
@@ -526,10 +558,7 @@ const TransactionDetails = () => {
     }
     
     return transaction;
-  };
-  
-  // Get normalized transaction data
-  const normalizedTx = normalizeTransaction();
+  }, [transaction]);
 
   // Update the fetchTransactionChainData function to use the traceDepth state
   const fetchTransactionChainData = useCallback(async (txHash, depth) => {

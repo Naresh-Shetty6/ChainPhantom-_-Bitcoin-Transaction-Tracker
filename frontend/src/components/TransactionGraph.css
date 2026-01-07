@@ -318,25 +318,25 @@
 }
 
 .root-node {
-  background: radial-gradient(circle at 30% 30%, #ffffff 0%, #2ecc71 100%);
+  background: radial-gradient(circle at 30% 30%, #0c1525 0%, #2ecc71 100%);
   box-shadow: 
     0 0 20px rgba(46, 204, 113, 0.6),
-    inset 0 2px 4px rgba(255, 255, 255, 0.3);
+    inset 0 2px 4px rgba(46, 204, 113, 0.3);
 }
 
 .normal-node {
-  background: radial-gradient(circle at 30% 30%, #ffffff 0%, #1abc9c 100%);
+  background: radial-gradient(circle at 30% 30%, #0c1525 0%, #1abc9c 100%);
   box-shadow: 
     0 0 15px rgba(26, 188, 156, 0.4),
-    inset 0 2px 4px rgba(255, 255, 255, 0.2);
+    inset 0 2px 4px rgba(26, 188, 156, 0.2);
 }
 
 .visited-node {
-  background: radial-gradient(circle at 30% 30%, #ffffff 0%, #f39c12 100%);
+  background: radial-gradient(circle at 30% 30%, #0c1525 0%, #f39c12 100%);
   border: 2px solid #f39c12;
   box-shadow: 
     0 0 20px rgba(243, 156, 18, 0.6),
-    inset 0 2px 4px rgba(255, 255, 255, 0.3);
+    inset 0 2px 4px rgba(243, 156, 18, 0.3);
   animation: warningPulse 2s ease-in-out infinite;
 }
 
@@ -346,11 +346,11 @@
 }
 
 .loop-node {
-  background: radial-gradient(circle at 30% 30%, #ffffff 0%, #e74c3c 100%);
+  background: radial-gradient(circle at 30% 30%, #0c1525 0%, #e74c3c 100%);
   border: 2px solid #e74c3c;
   box-shadow: 
     0 0 25px rgba(231, 76, 60, 0.7),
-    inset 0 2px 4px rgba(255, 255, 255, 0.3);
+    inset 0 2px 4px rgba(231, 76, 60, 0.3);
   animation: pulse 1.5s ease-in-out infinite;
 }
 

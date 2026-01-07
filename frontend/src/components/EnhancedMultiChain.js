@@ -6,9 +6,12 @@ import {
   faExchangeAlt, faShieldAlt, faChartLine, faHistory, faCopy,
   faExternalLinkAlt, faDownload, faFilter, faSort
 } from '@fortawesome/free-solid-svg-icons';
+import { useNetwork } from '../contexts/NetworkContext';
+import { getTestnetMultiChainData } from '../utils/testnetMockData';
 import './EnhancedMultiChain.css';
 
 const EnhancedMultiChain = () => {
+  const { isTestnet } = useNetwork();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedNetwork, setSelectedNetwork] = useState('bitcoin');
   const [analysisType, setAnalysisType] = useState('address');
@@ -74,6 +77,43 @@ const EnhancedMultiChain = () => {
 
     try {
       let analysisResults = {};
+
+      // Use testnet mock data if in testnet mode
+      if (isTestnet) {
+        setTimeout(() => {
+          const mockData = getTestnetMultiChainData(selectedNetwork, analysisType, searchQuery);
+          if (analysisType === 'address') {
+            analysisResults = {
+              type: 'address',
+              network: selectedNetwork,
+              address: searchQuery,
+              basicInfo: mockData,
+              riskAnalysis: { riskScore: mockData.riskScore, riskLevel: mockData.riskLevel },
+              exchangeConnections: [],
+              crossChainActivity: [],
+              transactionFlow: analyzeTransactionFlow(mockData.transactions || []),
+              riskScore: mockData.riskScore,
+              timeline: generateEnhancedTimeline(mockData.transactions || []),
+              clustering: performAdvancedClustering(mockData.transactions || [])
+            };
+          } else {
+            analysisResults = {
+              type: 'transaction',
+              network: selectedNetwork,
+              hash: searchQuery,
+              transaction: mockData,
+              riskScore: mockData.riskScore || 0,
+              flowAnalysis: {},
+              involvedAddresses: [],
+              networkAnalysis: {}
+            };
+          }
+          setResults(analysisResults);
+          setActiveTab('overview');
+          setLoading(false);
+        }, 800);
+        return;
+      }
 
       if (analysisType === 'address') {
         // Enhanced address analysis

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useNavigate, useParams, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
+import { useNetwork } from './contexts/NetworkContext';
 import Navbar from './components/Navbar';
 import SearchBar from './components/SearchBar';
 import Dashboard from './components/Dashboard';
@@ -52,12 +53,27 @@ function App() {
   // Component for Address Details
   const AddressDetails = ({ address }) => {
     const [addressData, setAddressData] = useState(null);
+    const [forensicData, setForensicData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { isTestnet } = useNetwork();
 
     useEffect(() => {
       const fetchAddressData = async () => {
         setLoading(true);
+        
+        // Use testnet mock data if in testnet mode
+        if (isTestnet) {
+          const { getTestnetAddress, getTestnetForensicAnalysis } = require('./utils/testnetMockData');
+          setTimeout(() => {
+            const mockData = getTestnetAddress(address);
+            const forensicAnalysis = getTestnetForensicAnalysis(address);
+            setAddressData(mockData);
+            setForensicData(forensicAnalysis);
+            setLoading(false);
+          }, 500);
+          return;
+        }
         
         try {
           const apiUrl = `http://localhost:5000/api/address/${address}`;
@@ -102,7 +118,7 @@ function App() {
 
       fetchAddressData();
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [address]);
+    }, [address, isTestnet]);
 
     if (loading) {
       return (
@@ -316,6 +332,58 @@ function App() {
           </div>
         </div>
         
+        {/* Suspicious Pattern Detection */}
+        {forensicData && forensicData.patterns && forensicData.patterns.length > 0 && (
+          <div className="card mb-4" style={{ backgroundColor: '#1a2637', border: '1px solid #2c3e50' }}>
+            <div className="card-header" style={{ backgroundColor: '#0f1a2e', borderBottom: '2px solid #e74c3c' }}>
+              <h5 style={{ color: '#ffffff', margin: 0, display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <i className="fas fa-exclamation-triangle" style={{ color: '#e74c3c' }}></i>
+                Suspicious Pattern Detection
+              </h5>
+            </div>
+            <div className="card-body">
+              <div className="mb-3">
+                <div className="d-flex align-items-center mb-2">
+                  <span className="me-3" style={{ fontSize: '1.2rem', fontWeight: 'bold', color: forensicData.riskScore >= 70 ? '#e74c3c' : forensicData.riskScore >= 50 ? '#f39c12' : '#3498db' }}>
+                    Risk Score: {forensicData.riskScore}/100
+                  </span>
+                  <span className={`badge ${forensicData.riskLevel === 'high' ? 'bg-danger' : forensicData.riskLevel === 'medium' ? 'bg-warning' : 'bg-info'}`}>
+                    {forensicData.riskLevel.toUpperCase()} RISK
+                  </span>
+                </div>
+              </div>
+              <div className="patterns-list">
+                {forensicData.patterns.map((pattern, index) => (
+                  <div 
+                    key={index} 
+                    className="alert mb-2"
+                    style={{ 
+                      backgroundColor: pattern.severity === 'high' ? '#2d1b1b' : pattern.severity === 'medium' ? '#2d251b' : '#1b1d2d',
+                      border: `1px solid ${pattern.severity === 'high' ? '#e74c3c' : pattern.severity === 'medium' ? '#f39c12' : '#3498db'}`,
+                      color: '#ffffff'
+                    }}
+                  >
+                    <div className="d-flex justify-content-between align-items-start">
+                      <div>
+                        <strong style={{ color: pattern.severity === 'high' ? '#e74c3c' : pattern.severity === 'medium' ? '#f39c12' : '#3498db' }}>
+                          {pattern.type.replace(/_/g, ' ').toUpperCase()}
+                        </strong>
+                        <p className="mb-0 mt-1">{pattern.description}</p>
+                        {pattern.count && (
+                          <small className="text-muted">Count: {pattern.count}</small>
+                        )}
+                      </div>
+                      <span className={`badge ${pattern.severity === 'high' ? 'bg-danger' : pattern.severity === 'medium' ? 'bg-warning' : 'bg-info'}`}>
+                        {pattern.severity.toUpperCase()}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+        
         {/* Recent Transactions */}
         {addressData.transactions && addressData.transactions.length > 0 && (
           <div className="card" style={{ backgroundColor: '#1a2637', border: '1px solid #2c3e50' }}>
@@ -385,7 +453,7 @@ function App() {
         }}
       />
       <Navbar />
-      
+    
       {/* Only show hero section on home page */}
       {location.pathname === '/' && (
         <div className="hero-section">
@@ -404,6 +472,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/tx/:txId" element={<TransactionPage />} />
+          <Route path="/transaction/:txId" element={<TransactionPage />} />
           <Route path="/address/:addressId" element={<AddressPage />} />
           <Route path="/block/:blockId" element={<BlockPage />} />
           <Route path="/transactions" element={

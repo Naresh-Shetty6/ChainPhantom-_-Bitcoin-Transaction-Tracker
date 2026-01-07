@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './Dashboard.css';
+import { useNetwork } from '../contexts/NetworkContext';
+import { getTestnetNetworkStats } from '../utils/testnetMockData';
 
 const Network = () => {
+  const { isTestnet } = useNetwork();
   const [networkStats, setNetworkStats] = useState({
     hashrate: '827.0 EH/s',
     difficulty: '123.2 T',
@@ -35,6 +38,17 @@ const Network = () => {
     const fetchNetworkStats = async () => {
       try {
         setLoading(true);
+        
+        // Use testnet mock data if in testnet mode
+        if (isTestnet) {
+          setTimeout(() => {
+            const mockStats = getTestnetNetworkStats();
+            setNetworkStats(mockStats);
+            setLoading(false);
+          }, 800);
+          return;
+        }
+        
         // Placeholder for actual API call to get network stats
         // const response = await fetch('https://api.blockchain.info/stats');
         // const data = await response.json();
@@ -52,7 +66,7 @@ const Network = () => {
     };
 
     fetchNetworkStats();
-  }, []);
+  }, [isTestnet]);
 
   if (loading) {
     return (
