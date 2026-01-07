@@ -1,0 +1,38 @@
+Type,ID,Name,Address_or_Hash,Risk_Score,Category,Description
+Address,Rule-1,Exceeds Monthly Average,meXKPaEDcm2F8mNf3YgR7vJ9wL2qH5sTmzBc,55,Original Rules,45 transactions vs 20 average
+Address,Rule-2,High Frequency Short Span,mhXKPaEDcm2F8mNf3YgR7vJ9wL2qH5sTmzBc,65,Original Rules,15 transactions in 1 hour
+Address,Rule-3,Lump Sum Transaction,mlXKPaEDcm2F8mNf3YgR7vJ9wL2qH5sTmzBc,70,Original Rules,100+ BTC transaction
+Address,WM-01,Alert Trigger,mwm01AlertTriggerWallet1234567890abcdef,55,Wallet Monitoring,Risk exceeds threshold
+Address,WM-02,No Alert,mwm02NoAlertRulesDisabled1234567890abcdef,80,Wallet Monitoring,Rules disabled
+Address,EM-01,Email Success,mem01SuccessfulSMTPSend1234567890abcdef,70,Email Alerts,Successful SMTP send
+Address,EM-02,Email Failure,mem02SMTPFailureHandling1234567890abcdef,75,Email Alerts,SMTP failure handling
+Address,PD-01,Fast Succession,mpd01FastSuccessionWallet1234567890abcdef,65,Pattern Detection,Fast succession pattern
+Address,ER-01,Monthly Average Breach,mer01MonthlyAverageBreached1234567890abcdef,55,Enhanced Rules,2.5 BTC vs 1.0 BTC avg
+Address,ER-02,Lump Sum Detection,mer02LumpSumDetection1234567890abcdef,70,Enhanced Rules,75 BTC transaction
+Address,EX-01,Export JSON,mex01ExportJSONAnalysis1234567890abcdef,65,Export & Reporting,Export test data
+Address,RS-02,Threshold Test,mrs02ThresholdChange1234567890abcdef,65,Risk Scoring,Threshold affects alerting
+Address,PR-01,Persist Wallet 1,mpr01WalletPersist1A1234567890abcdef,,Persistence,Wallet persistence test 1
+Address,PR-01,Persist Wallet 2,mpr01WalletPersist1B1234567890abcdef,,Persistence,Wallet persistence test 2
+Address,Extra,High-Risk Address,mzBcXKPaEDcm2F8mNf3YgR7vJ9wL2qH5sT,,Additional,Mixing patterns
+Address,Extra,Exchange Address,n3R7vJ9wL2qH5sTmzBcXKPaEDcm2F8mNf3Y,,Additional,High volume exchange
+Address,Extra,Normal User,2MxKPaEDcm2F8mNf3YgR7vJ9wL2qH5sTmzBc,,Additional,Normal activity
+Address,Extra,P2PKH Legacy,mipcBbFg9gMiCh81Kj8tqqdgoZub1ZJRfn,,Additional,Legacy address format
+Address,Extra,Bech32 SegWit,tb1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh,,Additional,Native SegWit format
+Transaction,Pattern,Single Sender,a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456,,Original Patterns,1 sender 1 receiver no change
+Transaction,Pattern,Two Receivers,b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef1234567,,Original Patterns,Peeling chain pattern
+Transaction,Pattern,Multiple Inputs,c3d4e5f6789012345678901234567890abcdef1234567890abcdef12345678,,Original Patterns,Many inputs few outputs
+Transaction,Pattern,CoinJoin,d4e5f6789012345678901234567890abcdef1234567890abcdef1234567890,,Original Patterns,CoinJoin mixer pattern
+Transaction,Pattern,Consolidation,e5f6789012345678901234567890abcdef1234567890abcdef1234567890ab,,Original Patterns,Consolidation pattern
+Transaction,Pattern,Normal Tx,f6789012345678901234567890abcdef1234567890abcdef1234567890abcd,,Original Patterns,Standard transaction
+Transaction,PD-01,Fast Succession,tpd01fastsuccession1234567890abcdef1234567890abcdef,65,Pattern Detection,15 tx in 1 hour
+Transaction,PD-02,Mixer/Tumbler,tpd02mixertumbler1234567890abcdef1234567890abcdef,85,Pattern Detection,20 inputs 20 outputs
+Transaction,ER-02,Lump Sum Tx,ter02lumpsum1234567890abcdef1234567890abcdef,70,Enhanced Rules,75 BTC transaction
+Transaction,TX-01,Valid Transaction,ttx01validbtctxid1234567890abcdef1234567890abcdef,,Transaction Fetch,Valid BTC transaction
+Transaction,TX-02,Invalid Tx,invalid_tx_format,,Transaction Fetch,Invalid format (error test)
+Transaction,MC-01,Ethereum Tx,0xtmc01ethtxdetails1234567890abcdef1234567890abcdef,,Multi-Chain,ETH transaction with gas
+Transaction,RS-01,Deterministic,trs01deterministicscoring1234567890abcdef,45,Risk Scoring,Same input same score
+Transaction,PF-02,Child Cap,tpf02childtxcap1234567890abcdef1234567890abcdef,,Performance,Child transaction cap test
+Transaction,Rule-1,Monthly Average Tx,f1rule1exceedsmonthlyaverage890abcdef1234567890abcdef123456789012,,Original Rules,Rule 1 transaction test
+Transaction,Rule-2,High Frequency Tx,f2rule2highfrequencyshortspan90abcdef1234567890abcdef123456789012,,Original Rules,Rule 2 transaction test
+Transaction,Rule-3,Lump Sum Rule Tx,f3rule3lumpsumtransaction90abcdef1234567890abcdef1234567890abcdef,,Original Rules,Rule 3 transaction test
+

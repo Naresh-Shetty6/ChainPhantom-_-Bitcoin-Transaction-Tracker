@@ -1,0 +1,274 @@
+==============================================
+FEATURE TEST STRINGS - QUICK COPY-PASTE
+==============================================
+
+Total: 20 Test Scenarios
+Main Focus: Wallet Monitor (5 scenarios)
+
+==============================================
+1. WALLET MONITOR (5 SCENARIOS) - MAIN FOCUS
+==============================================
+
+WM-F1: Dormant Wallet Suddenly Active (88% Risk)
+----------------------------------------------
+twmf01dormantactive123456789abcdef123456789abcdef123456789abcdef
+
+Expected: 3 alerts (dormant awakening, exceeds avg, high frequency)
+
+
+WM-F2: Structuring/Smurfing Pattern (92% Risk)
+----------------------------------------------
+twmf02structuring123456789abcdef123456789abcdef123456789abcdef12
+
+Expected: 3 alerts (structuring, exceeds avg, layering)
+
+
+WM-F3: Exchange-Like Activity (45% Risk)
+----------------------------------------------
+twmf03exchange123456789abcdef123456789abcdef123456789abcdef12345
+
+Expected: 3 alerts (exchange pattern, exceeds avg, high value flow)
+
+
+WM-F4: Mixer/Tumbler User (95% Risk)
+----------------------------------------------
+twmf04mixeruser123456789abcdef123456789abcdef123456789abcdef1234
+
+Expected: 4 alerts (mixer, privacy coins, exceeds avg, obfuscation)
+
+
+WM-F5: Sanctioned Entity (100% Risk - PROHIBITED)
+----------------------------------------------
+twmf05sanctioned123456789abcdef123456789abcdef123456789abcdef123
+
+Expected: 4 alerts (OFAC sanctions, blacklist, ransomware, Interpol)
+
+
+==============================================
+2. FORENSIC ANALYZER (5 SCENARIOS)
+==============================================
+
+FA-1: Exchange Deposit Trail (35% Risk - Clean)
+----------------------------------------------
+tfaf01exchange123456789abcdef123456789abcdef123456789abcdef1234
+
+Expected: Low risk, clean source (mining pool → exchange)
+
+
+FA-2: Dark Web Marketplace (94% Risk)
+----------------------------------------------
+tfaf02darkweb123456789abcdef123456789abcdef123456789abcdef12345
+
+Expected: Critical risk, AlphaBay marketplace link, FBI investigation
+
+
+FA-3: Ransomware Payment Trail (97% Risk)
+----------------------------------------------
+tfaf03ransomware123456789abcdef123456789abcdef123456789abcdef123
+
+Expected: Critical risk, REvil ransomware, 47 victims, $18M extorted
+
+
+FA-4: Money Laundering Network (91% Risk)
+----------------------------------------------
+tfaf04laundering123456789abcdef123456789abcdef123456789abcdef12
+
+Expected: Critical risk, 156 entities, 23 countries, Interpol operation
+
+
+FA-5: Institutional Wallet (5% Risk - Clean)
+----------------------------------------------
+tfaf05institutional123456789abcdef123456789abcdef123456789abcde
+
+Expected: Very low risk, MicroStrategy, SEC registered, compliant
+
+
+==============================================
+3. MULTI-CHAIN ANALYSIS (5 SCENARIOS)
+==============================================
+
+MC-1: Cross-Chain Bridge User (42% Risk)
+----------------------------------------------
+tmcf01bridge123456789abcdef123456789abcdef123456789abcdef12345
+
+Expected: Medium risk, legitimate DeFi user, 4 chains
+
+
+MC-2: Cross-Chain Laundering (96% Risk)
+----------------------------------------------
+tmcf02laundering123456789abcdef123456789abcdef123456789abcdef1
+
+Expected: Critical risk, 5 chains, 15 hops, money laundering
+
+
+MC-3: DeFi Yield Farmer (15% Risk - Clean)
+----------------------------------------------
+0xdef1234567890abcdef1234567890abcdef12345
+
+Expected: Low risk, legitimate DeFi investor, $450k portfolio
+
+
+MC-4: NFT Wash Trading (78% Risk)
+----------------------------------------------
+0x4567890abcdef1234567890abcdef1234567890a
+
+Expected: High risk, price manipulation, wash trading
+
+
+MC-5: ICO Exit Scam (99% Risk)
+----------------------------------------------
+0x7890abcdef1234567890abcdef1234567890abcd
+
+Expected: Critical risk, rug pull, 2,400 victims, $22M stolen
+
+
+==============================================
+4. PATTERN DETECTION (5 SCENARIOS)
+==============================================
+
+PD-F1: Circular Trading Pattern (82% Risk)
+----------------------------------------------
+tpdf01circular123456789abcdef123456789abcdef123456789abcdef12345
+
+Expected: High risk, circular path A→B→C→D→A, fake volume
+
+
+PD-F2: Rapid Fire Transactions (76% Risk)
+----------------------------------------------
+tpdf02rapidfire123456789abcdef123456789abcdef123456789abcdef123
+
+Expected: High risk, 52 tx in 8 minutes, bot activity
+
+
+PD-F3: Dusting Attack (65% Risk)
+----------------------------------------------
+tpdf03dusting123456789abcdef123456789abcdef123456789abcdef12345
+
+Expected: Medium-high risk, 1000+ outputs, de-anonymization attempt
+
+
+PD-F4: Time-Based Anomaly (58% Risk)
+----------------------------------------------
+tpdf04timeanomaly123456789abcdef123456789abcdef123456789abcdef1
+
+Expected: Medium risk, all TX at 3:00 AM UTC, automation
+
+
+PD-F5: Sybil Attack Pattern (87% Risk)
+----------------------------------------------
+tpdf05sybil123456789abcdef123456789abcdef123456789abcdef1234567
+
+Expected: High risk, 47 addresses same entity, coordinated
+
+
+==============================================
+QUICK 5-MINUTE TEST (Do these 5)
+==============================================
+
+1. Sanctioned Entity (100% risk):
+twmf05sanctioned123456789abcdef123456789abcdef123456789abcdef123
+
+2. Structuring (92% risk):
+twmf02structuring123456789abcdef123456789abcdef123456789abcdef12
+
+3. Ransomware (97% risk):
+tfaf03ransomware123456789abcdef123456789abcdef123456789abcdef123
+
+4. Cross-Chain Laundering (96% risk):
+tmcf02laundering123456789abcdef123456789abcdef123456789abcdef1
+
+5. Sybil Attack (87% risk):
+tpdf05sybil123456789abcdef123456789abcdef123456789abcdef1234567
+
+
+==============================================
+RISK SCORE LEGEND
+==============================================
+
+🟢 0-30%:    Low Risk (Clean, legitimate)
+🟡 30-50%:   Medium Risk (Some concerns)
+🟠 50-70%:   High Risk (Suspicious patterns)
+🔴 70-90%:   Very High Risk (Criminal indicators)
+⚫ 90-100%:  Critical (Sanctions, prohibited)
+
+
+==============================================
+HOW TO TEST
+==============================================
+
+1. Enable Testnet Mode (top-right toggle)
+2. Navigate to feature page (Wallet Monitor, Forensic, etc.)
+3. Copy and paste test string
+4. Run analysis/monitoring
+5. Verify expected results
+
+
+==============================================
+WALLET MONITOR ALERTS (Main Focus)
+==============================================
+
+The 5 wallet monitor scenarios demonstrate:
+
+✓ Dormant wallet reactivation
+✓ Structuring/smurfing (money laundering)
+✓ High-volume exchange activity
+✓ Mixer/tumbler usage (obfuscation)
+✓ Sanctions/blacklist matches (prohibited)
+
+All include multiple alerts and detailed risk analysis.
+
+
+==============================================
+FORENSIC ANALYZER SCENARIOS
+==============================================
+
+The 5 forensic scenarios cover:
+
+✓ Clean exchange deposit (low risk baseline)
+✓ Dark web marketplace link
+✓ Ransomware payment trails
+✓ Complex laundering networks
+✓ Institutional holdings (clean baseline)
+
+
+==============================================
+MULTI-CHAIN ANALYSIS SCENARIOS
+==============================================
+
+The 5 multi-chain scenarios include:
+
+✓ Legitimate bridge/DeFi usage
+✓ Cross-chain money laundering
+✓ DeFi yield farming
+✓ NFT wash trading
+✓ ICO exit scams
+
+
+==============================================
+PATTERN DETECTION SCENARIOS
+==============================================
+
+The 5 pattern scenarios detect:
+
+✓ Circular trading (fake volume)
+✓ Rapid fire transactions (bots)
+✓ Dusting attacks (de-anonymization)
+✓ Time-based anomalies (automation)
+✓ Sybil attacks (multiple identities)
+
+
+==============================================
+STATUS
+==============================================
+
+Total Scenarios:    20
+Wallet Monitor:      5 (MAIN FOCUS)
+Forensic Analyzer:   5
+Multi-Chain:         5
+Pattern Detection:   5
+
+Status: ✅ ALL READY FOR TESTING!
+
+Last Updated: January 7, 2026
+==============================================
+

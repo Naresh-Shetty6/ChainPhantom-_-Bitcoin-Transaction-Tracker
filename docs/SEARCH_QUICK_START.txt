@@ -1,0 +1,213 @@
+================================================================================
+UNIFIED SEARCH - QUICK START GUIDE
+================================================================================
+
+🎯 ONE SEARCH BAR FOR EVERYTHING!
+
+Just paste ANY address or transaction hash into the search bar.
+It automatically detects what it is and takes you to the right page!
+
+================================================================================
+HOW TO USE
+================================================================================
+
+STEP 1: Find the Search Bar
+  • On homepage: Large search field at top
+  • In navbar: Click search icon
+
+STEP 2: Paste Your Data
+  • Copy any address OR transaction from ALL_TEST_DATA.txt
+  • Paste it into the search bar
+
+STEP 3: Watch the Magic!
+  • Badge appears showing: 🔗 Transaction OR 👛 Wallet
+  • Press Enter
+  • Automatically goes to correct page!
+
+================================================================================
+INSTANT TEST (30 SECONDS)
+================================================================================
+
+Try This Address:
+mwm01AlertTriggerWallet1234567890abcdef
+
+What Happens:
+1. Paste into search
+2. Badge shows: "👛 Wallet Address"
+3. Press Enter
+4. Goes to: /address/mwm01...
+5. Shows Risk Score: 55 ✅
+
+Try This Transaction:
+tpd01fastsuccession1234567890abcdef1234567890abcdef
+
+What Happens:
+1. Paste into search
+2. Badge shows: "🔗 Transaction"
+3. Press Enter
+4. Goes to: /transaction/tpd01...
+5. Shows Fast Succession Pattern ✅
+
+================================================================================
+WHAT IT DETECTS
+================================================================================
+
+WALLET ADDRESSES:
+✓ Bitcoin Mainnet: 1..., 3..., bc1...
+✓ Bitcoin Testnet: m..., n..., 2..., tb1...
+✓ Ethereum: 0x + 40 characters
+✓ All test addresses from ALL_TEST_DATA.txt
+
+TRANSACTION HASHES:
+✓ Bitcoin: 64 hex characters
+✓ Ethereum: 0x + 64 hex characters
+✓ All test transactions from ALL_TEST_DATA.txt
+
+BLOCK NUMBERS:
+✓ Pure numbers (e.g., 2503456)
+
+================================================================================
+COPY-PASTE TEST DATA
+================================================================================
+
+--- PASTE THESE ADDRESSES ---
+
+meXKPaEDcm2F8mNf3YgR7vJ9wL2qH5sTmzBc          → Risk: 55
+mhXKPaEDcm2F8mNf3YgR7vJ9wL2qH5sTmzBc          → Risk: 65
+mlXKPaEDcm2F8mNf3YgR7vJ9wL2qH5sTmzBc          → Risk: 70
+mwm01AlertTriggerWallet1234567890abcdef       → Alert Test
+mem01SuccessfulSMTPSend1234567890abcdef       → Email Test
+mpd01FastSuccessionWallet1234567890abcdef     → Pattern Test
+mer02LumpSumDetection1234567890abcdef         → Lump Sum
+
+
+--- PASTE THESE TRANSACTIONS ---
+
+tpd01fastsuccession1234567890abcdef1234567890abcdef     → Fast Pattern
+tpd02mixertumbler1234567890abcdef1234567890abcdef       → Mixer (20x20)
+ter02lumpsum1234567890abcdef1234567890abcdef            → 75 BTC
+ttx01validbtctxid1234567890abcdef1234567890abcdef       → Valid Tx
+d4e5f6789012345678901234567890abcdef1234567890abcdef   → CoinJoin
+a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456  → Single
+
+
+================================================================================
+VISUAL GUIDE
+================================================================================
+
+BEFORE TYPING:
+┌────────────────────────────────────────────────────┐
+│ Search: Transaction Hash, Wallet Address...    [🔍] │
+└────────────────────────────────────────────────────┘
+
+
+AFTER PASTING ADDRESS:
+┌────────────────────────────────────────────────────┐
+│ mwm01AlertTrigger...  [👛 Wallet Address]     [🔍] │
+└────────────────────────────────────────────────────┘
+                         ↑ Badge auto-appears!
+
+
+AFTER PASTING TRANSACTION:
+┌────────────────────────────────────────────────────┐
+│ tpd01fastsuccession... [🔗 Transaction]       [🔍] │
+└────────────────────────────────────────────────────┘
+                         ↑ Detects transaction!
+
+
+================================================================================
+TESTNET MODE
+================================================================================
+
+When testnet is enabled, placeholder shows:
+"Search: Transaction Hash, Wallet Address... (Testnet Mode)"
+
+This reminds you that you're in testnet!
+
+================================================================================
+BENEFITS
+================================================================================
+
+✅ ONE field for addresses AND transactions
+✅ NO need to choose page first
+✅ AUTO-DETECTION of input type
+✅ VISUAL badge shows what was detected
+✅ INSTANT navigation to correct page
+✅ WORKS with all test data
+
+================================================================================
+SMART DETECTION
+================================================================================
+
+The search is SMART and detects based on:
+
+• Pattern matching (m..., t..., 0x...)
+• Length (64 chars = tx, 25-59 = address)
+• Format (hex, alphanumeric, etc.)
+• Test scenario patterns
+• Network type (mainnet vs testnet)
+
+You don't need to know the rules - just paste and go! 🚀
+
+================================================================================
+TIPS
+================================================================================
+
+💡 Copy entire address/hash (no partial strings)
+💡 Enable testnet mode before testing
+💡 Watch for the badge to confirm detection
+💡 Press Enter or click search button
+💡 Use ALL_TEST_DATA.txt for test values
+
+================================================================================
+TROUBLESHOOTING
+================================================================================
+
+No badge appearing?
+  → Paste the complete address/hash
+
+Wrong page opens?
+  → Check you copied the full string
+  → Verify testnet mode is on
+
+Can't find search bar?
+  → Look at top of homepage
+  → Or check navbar for search icon
+
+================================================================================
+EXAMPLE WORKFLOW
+================================================================================
+
+1. Open ChainPhantom
+2. Enable Testnet (toggle in navbar)
+3. Go to homepage (search bar is there)
+4. Open docs/ALL_TEST_DATA.txt
+5. Copy any address (e.g., mwm01Alert...)
+6. Paste into search bar
+7. See badge: "👛 Wallet Address"
+8. Press Enter
+9. ✅ Address page opens with risk score!
+
+Try again with a transaction:
+1. Copy: tpd01fastsuccession...
+2. Paste into search
+3. Badge: "🔗 Transaction"
+4. Press Enter
+5. ✅ Transaction page with patterns!
+
+================================================================================
+YOU'RE READY!
+================================================================================
+
+The unified search makes testing effortless:
+• No more choosing between pages
+• No more "wrong page" errors
+• Just paste and press Enter!
+
+🎉 Start testing now with ALL_TEST_DATA.txt!
+
+================================================================================
+Last Updated: January 7, 2026
+Status: Production Ready ✅
+================================================================================
+

@@ -1,0 +1,26 @@
+ID,Title,Category,Test Type,Address,Transaction,Expected Risk,Expected Pattern,Expected Alert,Priority
+CP-TC-WM-01,Alert triggers when risk ≥ threshold,Wallet Monitoring,Address,mwm01AlertTriggerWallet1234567890abcdef,,55,peeling_chain,true,High
+CP-TC-WM-02,No alert when rules disabled,Wallet Monitoring,Address,mwm02NoAlertRulesDisabled1234567890abcdef,,80,,false,High
+CP-TC-EM-01,Successful SMTP send,Email Alerts,Address,mem01SuccessfulSMTPSend1234567890abcdef,,70,peeling_chain,true,High
+CP-TC-EM-02,SMTP failure handling,Email Alerts,Address,mem02SMTPFailureHandling1234567890abcdef,,75,mixer,true,High
+CP-TC-PD-01,Fast succession detection,Pattern Detection,Transaction,mpd01FastSuccessionWallet1234567890abcdef,tpd01fastsuccession1234567890abcdef1234567890abcdef,65,fast_succession,true,Critical
+CP-TC-PD-02,Mixer/tumbler detection,Pattern Detection,Transaction,,tpd02mixertumbler1234567890abcdef1234567890abcdef,85,mixer,true,Critical
+CP-TC-ER-01,Monthly average threshold breach,Enhanced Wallet Rules,Address,mer01MonthlyAverageBreached1234567890abcdef,,55,exceeds_monthly_average,true,High
+CP-TC-ER-02,Lump sum detection,Enhanced Wallet Rules,Both,mer02LumpSumDetection1234567890abcdef,ter02lumpsum1234567890abcdef1234567890abcdef,70,lump_sum_transaction,true,High
+CP-TC-TX-01,Valid BTC txid renders,Transaction Fetch,Transaction,,ttx01validbtctxid1234567890abcdef1234567890abcdef,,,false,Medium
+CP-TC-TX-02,Invalid txid handled,Transaction Fetch,Transaction,,invalid_tx_format,,,false,Medium
+CP-TC-MC-01,ETH tx details with Etherscan,Multi-Chain,Transaction,,0xtmc01ethtxdetails1234567890abcdef1234567890abcdef,,,false,Medium
+CP-TC-MC-02,Unsupported chain fallback,Multi-Chain,System,,,,,false,Medium
+CP-TC-EX-01,Export JSON from analysis,Export & Reporting,Address,mex01ExportJSONAnalysis1234567890abcdef,,65,peeling_chain,false,Low
+CP-TC-EX-02,Export PDF on empty state,Export & Reporting,System,,,,,false,Low
+CP-TC-RS-01,Deterministic scoring,Risk Scoring,Transaction,,trs01deterministicscoring1234567890abcdef,45,consolidation,false,High
+CP-TC-RS-02,Threshold change affects alerting,Risk Scoring,Address,mrs02ThresholdChange1234567890abcdef,,65,,varies,High
+CP-TC-PR-01,Wallets persist after refresh,Persistence,System,"mpr01WalletPersist1A1234567890abcdef,mpr01WalletPersist1B1234567890abcdef",,,,false,Medium
+CP-TC-PR-02,Clear storage resets state,Persistence,System,,,,,false,Medium
+CP-TC-PF-01,60s interval stability,Performance,System,,,,,false,High
+CP-TC-PF-02,Child tx cap respected,Performance,Transaction,,tpf02childtxcap1234567890abcdef1234567890abcdef,,,false,High
+CP-TC-SC-01,Missing API key warning,Security,System,,,,,false,Critical
+CP-TC-SC-02,No secrets exposed in bundle,Security,System,,,,,false,Critical
+CP-TC-UX-01,Mobile responsive layout,UI/UX,System,,,,,false,Medium
+CP-TC-UX-02,Risk gauge contrast/labels,UI/UX,System,,,,,false,Medium
+

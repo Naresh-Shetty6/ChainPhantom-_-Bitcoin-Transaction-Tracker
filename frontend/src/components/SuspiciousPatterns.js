@@ -1,17 +1,37 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './SuspiciousPatterns.css';
 import { API_KEY } from '../config';
+import { useNetwork } from '../contexts/NetworkContext';
+import { getTestnetForensicAnalysis } from '../utils/testnetMockData';
 
 const SuspiciousPatterns = ({ address }) => {
+  const { isTestnet } = useNetwork();
   const [patterns, setPatterns] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [addressData, setAddressData] = useState(null);
+  const [riskScore, setRiskScore] = useState(0);
 
   const detectSuspiciousPatterns = useCallback(async () => {
     setLoading(true);
     setError('');
     setPatterns([]);
+
+    // Use testnet mock data if in testnet mode
+    if (isTestnet) {
+      try {
+        const forensicAnalysis = getTestnetForensicAnalysis(address);
+        setPatterns(forensicAnalysis.patterns || []);
+        setRiskScore(forensicAnalysis.riskScore || 0);
+        setLoading(false);
+        return;
+      } catch (err) {
+        console.error('Error with testnet forensic analysis:', err);
+        setError('Failed to analyze address patterns');
+        setLoading(false);
+        return;
+      }
+    }
 
     try {
       // Fetch actual address data from blockchain.info
@@ -112,7 +132,7 @@ const SuspiciousPatterns = ({ address }) => {
     } finally {
       setLoading(false);
     }
-  }, [address]);
+  }, [address, isTestnet]);
 
   useEffect(() => {
     if (address) {
@@ -201,6 +221,18 @@ const SuspiciousPatterns = ({ address }) => {
         </div>
       )}
 
+      {riskScore > 0 && (
+        <div className="risk-score-display mb-3">
+          <div className="risk-score-value" style={{ 
+            color: riskScore >= 70 ? '#e74c3c' : riskScore >= 50 ? '#f39c12' : '#3498db',
+            fontSize: '1.5rem',
+            fontWeight: 'bold'
+          }}>
+            Risk Score: {riskScore}/100
+          </div>
+        </div>
+      )}
+
       {patterns.length === 0 ? (
         <div className="suspicious-none">
           <p>No suspicious patterns detected</p>
@@ -217,8 +249,13 @@ const SuspiciousPatterns = ({ address }) => {
                 {getSeverityIcon(pattern.severity)}
               </div>
               <div className="suspicious-details">
-                <div className="suspicious-type">{pattern.type}</div>
+                <div className="suspicious-type">{pattern.type.replace(/_/g, ' ').toUpperCase()}</div>
                 <div className="suspicious-description">{pattern.description}</div>
+                {pattern.count && (
+                  <div className="suspicious-value">
+                    <strong>Count:</strong> {pattern.count}
+                  </div>
+                )}
                 {pattern.value && (
                   <div className="suspicious-value">
                     <strong>Count:</strong> {pattern.value}

@@ -1,0 +1,93 @@
+================================================================================
+COPY-PASTE LIST - WALLET ADDRESSES
+================================================================================
+
+meXKPaEDcm2F8mNf3YgR7vJ9wL2qH5sTmzBc
+mhXKPaEDcm2F8mNf3YgR7vJ9wL2qH5sTmzBc
+mlXKPaEDcm2F8mNf3YgR7vJ9wL2qH5sTmzBc
+mwm01AlertTriggerWallet1234567890abcdef
+mwm02NoAlertRulesDisabled1234567890abcdef
+mem01SuccessfulSMTPSend1234567890abcdef
+mem02SMTPFailureHandling1234567890abcdef
+mpd01FastSuccessionWallet1234567890abcdef
+mer01MonthlyAverageBreached1234567890abcdef
+mer02LumpSumDetection1234567890abcdef
+mex01ExportJSONAnalysis1234567890abcdef
+mrs02ThresholdChange1234567890abcdef
+mpr01WalletPersist1A1234567890abcdef
+mpr01WalletPersist1B1234567890abcdef
+mzBcXKPaEDcm2F8mNf3YgR7vJ9wL2qH5sT
+n3R7vJ9wL2qH5sTmzBcXKPaEDcm2F8mNf3Y
+2MxKPaEDcm2F8mNf3YgR7vJ9wL2qH5sTmzBc
+mipcBbFg9gMiCh81Kj8tqqdgoZub1ZJRfn
+tb1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh
+
+
+================================================================================
+COPY-PASTE LIST - TRANSACTION HASHES
+================================================================================
+
+a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456
+b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef1234567
+c3d4e5f6789012345678901234567890abcdef1234567890abcdef12345678
+d4e5f6789012345678901234567890abcdef1234567890abcdef1234567890
+e5f6789012345678901234567890abcdef1234567890abcdef1234567890ab
+f6789012345678901234567890abcdef1234567890abcdef1234567890abcd
+tpd01fastsuccession1234567890abcdef1234567890abcdef
+tpd02mixertumbler1234567890abcdef1234567890abcdef
+ter02lumpsum1234567890abcdef1234567890abcdef
+ttx01validbtctxid1234567890abcdef1234567890abcdef
+invalid_tx_format
+0xtmc01ethtxdetails1234567890abcdef1234567890abcdef
+trs01deterministicscoring1234567890abcdef
+tpf02childtxcap1234567890abcdef1234567890abcdef
+f1rule1exceedsmonthlyaverage890abcdef1234567890abcdef123456789012
+f2rule2highfrequencyshortspan90abcdef1234567890abcdef123456789012
+f3rule3lumpsumtransaction90abcdef1234567890abcdef1234567890abcdef
+
+
+================================================================================
+TOP 5 MUST-TEST ADDRESSES
+================================================================================
+
+mwm01AlertTriggerWallet1234567890abcdef
+mhXKPaEDcm2F8mNf3YgR7vJ9wL2qH5sTmzBc
+mlXKPaEDcm2F8mNf3YgR7vJ9wL2qH5sTmzBc
+mpd01FastSuccessionWallet1234567890abcdef
+mer02LumpSumDetection1234567890abcdef
+
+
+================================================================================
+TOP 5 MUST-TEST TRANSACTIONS
+================================================================================
+
+tpd01fastsuccession1234567890abcdef1234567890abcdef
+tpd02mixertumbler1234567890abcdef1234567890abcdef
+d4e5f6789012345678901234567890abcdef1234567890abcdef1234567890
+ter02lumpsum1234567890abcdef1234567890abcdef
+ttx01validbtctxid1234567890abcdef1234567890abcdef
+
+
+================================================================================
+FULL URLS FOR QUICK ACCESS
+================================================================================
+
+--- ADDRESSES ---
+http://localhost:3000/address/meXKPaEDcm2F8mNf3YgR7vJ9wL2qH5sTmzBc
+http://localhost:3000/address/mhXKPaEDcm2F8mNf3YgR7vJ9wL2qH5sTmzBc
+http://localhost:3000/address/mlXKPaEDcm2F8mNf3YgR7vJ9wL2qH5sTmzBc
+http://localhost:3000/address/mwm01AlertTriggerWallet1234567890abcdef
+http://localhost:3000/address/mem01SuccessfulSMTPSend1234567890abcdef
+http://localhost:3000/address/mpd01FastSuccessionWallet1234567890abcdef
+http://localhost:3000/address/mer02LumpSumDetection1234567890abcdef
+
+--- TRANSACTIONS ---
+http://localhost:3000/transaction/tpd01fastsuccession1234567890abcdef1234567890abcdef
+http://localhost:3000/transaction/tpd02mixertumbler1234567890abcdef1234567890abcdef
+http://localhost:3000/transaction/ter02lumpsum1234567890abcdef1234567890abcdef
+http://localhost:3000/transaction/ttx01validbtctxid1234567890abcdef1234567890abcdef
+http://localhost:3000/transaction/d4e5f6789012345678901234567890abcdef1234567890abcdef1234567890
+
+--- WALLET MONITOR ---
+http://localhost:3000/wallet-monitor
+

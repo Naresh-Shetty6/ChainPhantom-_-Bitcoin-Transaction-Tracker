@@ -1,0 +1,209 @@
+================================================================================
+CHAINPHANTOM - ALL TEST DATA
+Complete List of Wallet Addresses & Transaction Hashes
+================================================================================
+
+===============================================================================
+WALLET ADDRESSES (For Wallet Monitor & Address Details)
+===============================================================================
+
+--- ORIGINAL 3 CHAINPHANTOM RULES ---
+
+Rule 1 - Exceeds Monthly Average:
+meXKPaEDcm2F8mNf3YgR7vJ9wL2qH5sTmzBc
+
+Rule 2 - High Frequency Short Span:
+mhXKPaEDcm2F8mNf3YgR7vJ9wL2qH5sTmzBc
+
+Rule 3 - Lump Sum Transaction:
+mlXKPaEDcm2F8mNf3YgR7vJ9wL2qH5sTmzBc
+
+
+--- COMPREHENSIVE TEST SCENARIOS (24 TESTS) ---
+
+WM-01 - Alert Trigger (Risk: 55):
+mwm01AlertTriggerWallet1234567890abcdef
+
+WM-02 - No Alert/Rules Disabled (Risk: 80):
+mwm02NoAlertRulesDisabled1234567890abcdef
+
+EM-01 - Email Success (Risk: 70):
+mem01SuccessfulSMTPSend1234567890abcdef
+
+EM-02 - Email Failure (Risk: 75):
+mem02SMTPFailureHandling1234567890abcdef
+
+PD-01 - Fast Succession (Risk: 65):
+mpd01FastSuccessionWallet1234567890abcdef
+
+ER-01 - Monthly Average Breach (Risk: 55):
+mer01MonthlyAverageBreached1234567890abcdef
+
+ER-02 - Lump Sum Detection (Risk: 70):
+mer02LumpSumDetection1234567890abcdef
+
+EX-01 - Export JSON (Risk: 65):
+mex01ExportJSONAnalysis1234567890abcdef
+
+RS-02 - Threshold Test (Risk: 65):
+mrs02ThresholdChange1234567890abcdef
+
+PR-01 - Persist Wallet 1:
+mpr01WalletPersist1A1234567890abcdef
+
+PR-01 - Persist Wallet 2:
+mpr01WalletPersist1B1234567890abcdef
+
+--- ADDITIONAL TEST ADDRESSES ---
+
+High-Risk Address:
+mzBcXKPaEDcm2F8mNf3YgR7vJ9wL2qH5sT
+
+Exchange Address:
+n3R7vJ9wL2qH5sTmzBcXKPaEDcm2F8mNf3Y
+
+Normal User Address:
+2MxKPaEDcm2F8mNf3YgR7vJ9wL2qH5sTmzBc
+
+P2PKH Address (Legacy):
+mipcBbFg9gMiCh81Kj8tqqdgoZub1ZJRfn
+
+Bech32 Address (Native SegWit):
+tb1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh
+
+
+===============================================================================
+TRANSACTION HASHES (For Transaction Details)
+===============================================================================
+
+--- ORIGINAL TRANSACTION PATTERNS ---
+
+Single Sender, Single Receiver (No Change):
+a1b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef123456
+
+Single Sender, Two Receivers (Peeling Chain):
+b2c3d4e5f6789012345678901234567890abcdef1234567890abcdef1234567
+
+Multiple Inputs, Few Outputs:
+c3d4e5f6789012345678901234567890abcdef1234567890abcdef12345678
+
+CoinJoin Transaction:
+d4e5f6789012345678901234567890abcdef1234567890abcdef1234567890
+
+Consolidation Pattern:
+e5f6789012345678901234567890abcdef1234567890abcdef1234567890ab
+
+Normal Transaction:
+f6789012345678901234567890abcdef1234567890abcdef1234567890abcd
+
+
+--- COMPREHENSIVE TEST SCENARIOS ---
+
+PD-01 - Fast Succession Detection:
+tpd01fastsuccession1234567890abcdef1234567890abcdef
+
+PD-02 - Mixer/Tumbler (20x20):
+tpd02mixertumbler1234567890abcdef1234567890abcdef
+
+ER-02 - Lump Sum (75 BTC):
+ter02lumpsum1234567890abcdef1234567890abcdef
+
+TX-01 - Valid Transaction:
+ttx01validbtctxid1234567890abcdef1234567890abcdef
+
+TX-02 - Invalid Transaction (Error Test):
+invalid_tx_format
+
+MC-01 - Ethereum Transaction:
+0xtmc01ethtxdetails1234567890abcdef1234567890abcdef
+
+RS-01 - Deterministic Scoring:
+trs01deterministicscoring1234567890abcdef
+
+PF-02 - Child Transaction Cap:
+tpf02childtxcap1234567890abcdef1234567890abcdef
+
+Rule 1 Test Transaction:
+f1rule1exceedsmonthlyaverage890abcdef1234567890abcdef123456789012
+
+Rule 2 Test Transaction:
+f2rule2highfrequencyshortspan90abcdef1234567890abcdef123456789012
+
+Rule 3 Test Transaction:
+f3rule3lumpsumtransaction90abcdef1234567890abcdef1234567890abcdef
+
+
+===============================================================================
+QUICK USAGE GUIDE
+===============================================================================
+
+FOR WALLET ADDRESSES:
+1. Go to: http://localhost:3000/wallet-monitor
+2. Paste address in "Add Wallet to Monitor" input field
+3. Click "+ Add Wallet"
+
+OR
+
+1. Direct URL: http://localhost:3000/address/{ADDRESS}
+2. Replace {ADDRESS} with any address above
+
+
+FOR TRANSACTION HASHES:
+1. Direct URL: http://localhost:3000/transaction/{HASH}
+2. Replace {HASH} with any transaction hash above
+
+
+EXAMPLE URLS:
+http://localhost:3000/address/mwm01AlertTriggerWallet1234567890abcdef
+http://localhost:3000/transaction/tpd01fastsuccession1234567890abcdef1234567890abcdef
+
+
+===============================================================================
+TEST SUMMARY
+===============================================================================
+
+Total Wallet Addresses: 17
+Total Transaction Hashes: 17
+Total Test Scenarios: 24 (some use addresses, some use transactions)
+
+All data works in TESTNET MODE ONLY.
+Toggle testnet mode in the navbar before testing.
+
+
+===============================================================================
+RISK SCORE REFERENCE
+===============================================================================
+
+WALLET ADDRESSES:
+meXKPa... = 55 (Medium)
+mhXKPa... = 65 (High)
+mlXKPa... = 70 (High)
+mwm01... = 55 (Medium)
+mwm02... = 80 (High)
+mem01... = 70 (High)
+mem02... = 75 (High)
+mpd01... = 65 (High)
+mer01... = 55 (Medium)
+mer02... = 70 (High)
+mex01... = 65 (High)
+mrs02... = 65 (High)
+
+TRANSACTION PATTERNS:
+tpd01... = Fast Succession (Medium)
+tpd02... = Mixer (Critical)
+ter02... = Lump Sum (High)
+ttx01... = Valid Transaction
+invalid_tx_format = Error (Expected)
+0xtmc01... = Ethereum Transaction
+trs01... = Deterministic (45)
+tpf02... = Child Cap Test
+
+
+===============================================================================
+END OF FILE
+================================================================================
+Last Updated: January 7, 2026
+Version: 1.0.0
+Status: Production Ready for Testnet
+================================================================================
+
